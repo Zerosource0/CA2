@@ -7,23 +7,29 @@ package entity;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 /**
  *
  * @author marcj_000
  */
 @Entity
+@Table(name = "hobby")
 public class Hobby implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     private Integer id;
+    @Column(name="name")
     private String name;
+    @Column(name="description")
     private String description;
     @ManyToMany(mappedBy = "hobbies")
     private List<Person> persons;
