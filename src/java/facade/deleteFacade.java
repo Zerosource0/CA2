@@ -19,11 +19,11 @@ import javax.persistence.Persistence;
  *
  * @author williambech
  */
-public class deleteFacade implements DeleteInterface {
+public class DeleteFacade implements DeleteInterface {
 
     private EntityManagerFactory emf;
 
-    public deleteFacade(EntityManagerFactory emf) {
+    public DeleteFacade(EntityManagerFactory emf) {
         this.emf = emf;
     }
 

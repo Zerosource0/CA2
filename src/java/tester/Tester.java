@@ -5,6 +5,7 @@
  */
 package tester;
 
+import facade.AdderFacade;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -23,6 +24,8 @@ public class Tester {
         
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(pu);
         EntityManager em = emf.createEntityManager();
+        
+        AdderFacade af = new AdderFacade(emf);
     }
     
 }
