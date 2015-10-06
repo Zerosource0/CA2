@@ -7,24 +7,34 @@ package entity;
 
 import java.io.Serializable;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 /**
  *
  * @author marcj_000
  */
 @Entity
+@Table(name = "phone")
 public class Phone implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    
+    @Column(name = "id")
     private Integer id;
+    
+    @Column(name = "number")
     private Integer number;
+    
+    @Column(name = "description")
     private String description;
+    
     @ManyToOne(cascade = CascadeType.ALL)
     private InfoEntity infoEntity;
 

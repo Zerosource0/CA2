@@ -6,22 +6,33 @@
 package entity;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  *
  * @author marcj_000
  */
 @Entity
+@Table(name = "company")
 public class Company extends InfoEntity implements Serializable {
    
+    @Column(name = "name")
     private String name;
+    
+    @Column(name = "description")
     private String description;
+    
+    @Column(name = "cvr")
     private Integer cvr;
+    
+    @Column(name = "numEmployees")
     private Integer numEmployees;
+    
     private Long marketValue;
 
     public Company(String name, String description, Integer cvr, Integer numEmployees, Long marketValue) {
