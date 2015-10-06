@@ -30,12 +30,21 @@ public class ServiceFacade implements ServiceInterface {
     public EntityManager getEntityManager() {
         return emf.createEntityManager();
     }
+    
+       public Person getPersonById(int id) {
+        EntityManager em = getEntityManager();
+        try {
+            return em.find(Person.class, id);
+        } finally {
+            em.close();
+        }
+    }
 
     @Override
     public List<Person> getPeople() {
         EntityManager em = getEntityManager();
         try {
-            return em.createQuery("select p from person p").getResultList();
+            return em.createQuery("select p from Person p").getResultList();
         } finally {
             em.close();
         }
@@ -45,7 +54,7 @@ public class ServiceFacade implements ServiceInterface {
     public List<Company> getCompanies() {
         EntityManager em = getEntityManager();
         try {
-            return em.createQuery("select c from company c").getResultList();
+            return em.createQuery("select c from Company c").getResultList();
         } finally {
             em.close();
         }
@@ -55,7 +64,7 @@ public class ServiceFacade implements ServiceInterface {
     public List<Hobby> getHobbies() {
         EntityManager em = getEntityManager();
         try {
-            return em.createQuery("select h from hobby h").getResultList();
+            return em.createQuery("select h from Hobby h").getResultList();
         } finally {
             em.close();
         }
@@ -65,7 +74,7 @@ public class ServiceFacade implements ServiceInterface {
     public List<CityInfo> getCityInfoList() {
         EntityManager em = getEntityManager();
         try {
-            return em.createQuery("select c from cityinfo c").getResultList();
+            return em.createQuery("select c from CityInfo c").getResultList();
         } finally {
             em.close();
         }
@@ -75,7 +84,7 @@ public class ServiceFacade implements ServiceInterface {
     public List<Address> getAddresses() {
         EntityManager em = getEntityManager();
         try {
-            return em.createQuery("select a from address a").getResultList();
+            return em.createQuery("select a from Address a").getResultList();
         } finally {
             em.close();
         }
@@ -85,7 +94,7 @@ public class ServiceFacade implements ServiceInterface {
     public List<Phone> getPhones() {
         EntityManager em = getEntityManager();
         try {
-            return em.createQuery("select p from phone p").getResultList();
+            return em.createQuery("select p from Phone p").getResultList();
         } finally {
             em.close();
         }

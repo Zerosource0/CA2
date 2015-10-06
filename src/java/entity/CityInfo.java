@@ -30,11 +30,13 @@ public class CityInfo implements Serializable {
     @Column(name = "id")
     private Integer id;
     
-    @Column(name = "zipcode")
-    private Integer zipCode;
-    
+        
     @Column(name = "city")
     private String city;
+    
+    @Column(name = "zip")
+    private Integer zip;
+
 
     @OneToMany(mappedBy = "cityInfo")
     private List<Address> addresses = new ArrayList();
@@ -48,7 +50,7 @@ public class CityInfo implements Serializable {
     }
     
     public CityInfo(Integer zipCode, String city) {
-        this.zipCode = zipCode;
+        this.zip = zipCode;
         this.city = city;
     }
 
@@ -56,11 +58,11 @@ public class CityInfo implements Serializable {
     }
 
     public Integer getZipCode() {
-        return zipCode;
+        return zip;
     }
 
     public void setZipCode(Integer zipCode) {
-        this.zipCode = zipCode;
+        this.zip = zipCode;
     }
 
     public String getCity() {
