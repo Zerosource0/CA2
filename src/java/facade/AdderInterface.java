@@ -18,15 +18,15 @@ import entity.Phone;
  */
 public interface AdderInterface {
     
-    public void addPerson(Person person);
+    public Person addPerson(Person person);
     
-    public void addCompany(Company company);
+    public Company addCompany(Company company);
     
-    public void addHobby(Hobby hobby);
+    public Hobby addHobby(Hobby hobby);
     
-    public void addCityInfo(CityInfo cityInfo);
+    public CityInfo addCityInfo(CityInfo cityInfo);
     
-    public void addPhone(Phone phone);
+    public Phone addPhone(Phone phone);
     
-    public void addAddress(Address address);
+    public Address addAddress(Address address);
 }
