@@ -18,16 +18,16 @@ import entity.Phone;
  */
 public interface DeleteInterface {
     
-    public Person deletePerson(Person person);
+    public Person deletePerson(int id);
     
-    public Company deleteCompany(Company company);
+    public Company deleteCompany(int id);
     
-    public Hobby deleteHobby(Hobby hobby);
+    public Hobby deleteHobby(int id);
     
-    public CityInfo deleteCityInfo(CityInfo cityInfo);
+    public CityInfo deleteCityInfo(int id);
     
-    public Phone deletePhone(Phone phone);
+    public Phone deletePhone(int id);
     
-    public Address deleteAddress(Address address);
+    public Address deleteAddress(int id);
     
 }

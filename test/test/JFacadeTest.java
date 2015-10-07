@@ -57,7 +57,7 @@ public class JFacadeTest {
     @Test
     public void deletePerson() {
 
-        df.deletePerson(pe);
+        df.deletePerson(1);
         assertEquals(0, sf.getPeople().size());
     }
 
@@ -74,7 +74,7 @@ public class JFacadeTest {
     @Test
     public void deleteAddress() {
 
-        df.deleteAddress(a);
+        df.deleteAddress(1);
         assertEquals(0, sf.getAddresses().size());
     }
 
@@ -91,7 +91,7 @@ public class JFacadeTest {
     @Test
     public void deleteCityInfo() {
 
-        df.deleteCityInfo(c);
+        df.deleteCityInfo(1);
         assertEquals(2704, sf.getCityInfoList().size());
     }
 
@@ -107,7 +107,7 @@ public class JFacadeTest {
 
     @Test
     public void deleteCompany() {
-        df.deleteCompany(p);
+        df.deleteCompany(2);
         assertEquals(0, sf.getCompanies().size());
     }
 
@@ -120,10 +120,10 @@ public class JFacadeTest {
         af.addHobby(h);
         assertEquals(1, sf.getHobbies().size());
     }
-
+    @Test
     public void deleteHobby() {
 
-        df.deleteHobby(h);
+        df.deleteHobby(1);
         assertEquals(0, sf.getHobbies().size());
     }
 
@@ -136,10 +136,10 @@ public class JFacadeTest {
         af.addPhone(ph);
         assertEquals(1, sf.getPhones().size());
     }
-
+    @Test
     public void deletePhone() {
 
-        df.deletePhone(ph);
+        df.deletePhone(1);
         assertEquals(0, sf.getPhones().size());
     }
 

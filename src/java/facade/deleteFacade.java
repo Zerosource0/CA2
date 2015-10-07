@@ -32,8 +32,9 @@ public class DeleteFacade implements DeleteInterface {
     }
 
     @Override
-    public Person deletePerson(Person person) {
+    public Person deletePerson(int id) {
         EntityManager em = emf.createEntityManager();
+        Person person = em.find(Person.class, id);
         try {
             em.getTransaction().begin();
             em.remove(person);
@@ -45,8 +46,9 @@ public class DeleteFacade implements DeleteInterface {
     }
 
     @Override
-    public Company deleteCompany(Company company) {
+    public Company deleteCompany(int id) {
         EntityManager em = emf.createEntityManager();
+        Company company = em.find(Company.class, id);
         try {
             em.getTransaction().begin();
             em.remove(company);
@@ -57,8 +59,9 @@ public class DeleteFacade implements DeleteInterface {
         }    }
 
     @Override
-    public Hobby deleteHobby(Hobby hobby) {
+    public Hobby deleteHobby(int id) {
         EntityManager em = emf.createEntityManager();
+        Hobby hobby = em.find(Hobby.class, id);
         try {
             em.getTransaction().begin();
             em.remove(hobby);
@@ -69,8 +72,9 @@ public class DeleteFacade implements DeleteInterface {
         }    }
 
     @Override
-    public CityInfo deleteCityInfo(CityInfo cityInfo) {
+    public CityInfo deleteCityInfo(int id) {
         EntityManager em = emf.createEntityManager();
+        CityInfo cityInfo = em.find(CityInfo.class, id);
         try {
             em.getTransaction().begin();
             em.remove(cityInfo);
@@ -81,8 +85,9 @@ public class DeleteFacade implements DeleteInterface {
         }    }
 
     @Override
-    public Phone deletePhone(Phone phone) {
+    public Phone deletePhone(int id) {
         EntityManager em = emf.createEntityManager();
+        Phone phone = em.find(Phone.class, id);
         try {
             em.getTransaction().begin();
             em.remove(phone);
@@ -93,8 +98,9 @@ public class DeleteFacade implements DeleteInterface {
         }    }
 
     @Override
-    public Address deleteAddress(Address address) {
+    public Address deleteAddress(int id) {
         EntityManager em = emf.createEntityManager();
+        Address address = em.find(Address.class, id);
         try {
             em.getTransaction().begin();
             em.remove(address);
