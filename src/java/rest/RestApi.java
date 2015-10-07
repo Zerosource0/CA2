@@ -54,14 +54,43 @@ public class RestApi {
        
     }
 
-
+        @GET
+    @Path("/contactinfo")
+    @Produces("application/json")
+    public String getContactInfo() {
+        
+        List<Person> people = serviceFacade.getPeople();
+        JsonArray jsonArray = new JsonArray();
+        for (Person p : people) {
+            JsonObject json = new JsonObject();
+            json.addProperty("id", p.getId());
+            json.addProperty("name", new String(p.getFirstName()+p.getLastName()));
+            json.addProperty("email", p.getEmail());
+            
+            List<Phone> phones = p.getPhones();  
+            JsonArray phoneArray = new JsonArray();
+            for (Phone phone : phones) {
+                JsonObject phoneJson = new JsonObject();
+                phoneJson.addProperty("number", phone.getNumber());
+                phoneJson.addProperty("description", phone.getDescription());
+                phoneArray.add(phoneJson);
+            }
+            
+            json.add("phones", phoneArray);
+            jsonArray.add(json);
+        }        
+        
+        return gson.toJson(jsonArray);
+    }
+    
+    
     @GET
     @Path("/complete")
     @Produces("application/json")
-    public String getJson() {
+    public String getComplete() {
         
         List<Person> people = serviceFacade.getPeople();
-        System.out.println("PEOPLE SIZE: " + people.size());
+        
         JsonArray jsonArray = new JsonArray();
         for (Person p : people) {
             JsonObject json = new JsonObject();
@@ -78,7 +107,7 @@ public class RestApi {
                 phoneArray.add(phoneJson);
             }
             
-            json.addProperty("phones", phoneArray.toString());
+            json.add("phones", phoneArray);
             json.addProperty("strret", p.getAddress().getStreet());
             json.addProperty("additionalInfo", p.getAddress().getAdditionalInfo());
             json.addProperty("zipcode", p.getAddress().getCityInfo().getZipCode());
