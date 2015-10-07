@@ -38,6 +38,10 @@ public class Phone implements Serializable {
     @ManyToOne(cascade = CascadeType.ALL)
     private InfoEntity infoEntity;
 
+    public void addInfoEntity(InfoEntity infoEntity){
+        this.infoEntity = infoEntity;
+    }
+    
     public Phone(Integer number, String description) {
         this.number = number;
         this.description = description;

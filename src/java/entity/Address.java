@@ -43,6 +43,14 @@ public class Address implements Serializable {
     @ManyToOne
     private CityInfo cityInfo;
 
+    public CityInfo getCityInfo() {
+        return cityInfo;
+    }
+
+    public void setCityInfo(CityInfo cityInfo) {
+        this.cityInfo = cityInfo;
+    }
+
     public void addInfoEntity(InfoEntity infoEntity) {
         infoEntities.add(infoEntity);
     }

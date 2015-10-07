@@ -29,7 +29,6 @@ public class CityInfo implements Serializable {
     
     @Column(name = "id")
     private Integer id;
-    
         
     @Column(name = "city")
     private String city;

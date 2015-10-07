@@ -5,7 +5,14 @@
  */
 package tester;
 
+import entity.Address;
+import entity.CityInfo;
+import entity.Hobby;
+import entity.Person;
+import entity.Phone;
 import facade.AdderFacade;
+import facade.ServiceFacade;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -26,6 +33,28 @@ public class Tester {
         EntityManager em = emf.createEntityManager();
         
         AdderFacade af = new AdderFacade(emf);
+        ServiceFacade sf = new ServiceFacade(emf);
+        
+        Person p = new Person("Kurt","Wonnegut4");
+        Phone phone = new Phone(12345678,"kurts phone1");
+        phone.addInfoEntity(p);
+        p.addPhone(phone);
+        
+        phone = new Phone(87654321,"kurts other phone");
+        phone.addInfoEntity(p);
+        p.addPhone(phone);
+        
+        Address address = new Address("Hello Kitty Strret1","Kurts address1");
+        List<CityInfo> cities = sf.getCityInfoList();
+        address.setCityInfo(cities.get(1));
+        
+        p.setAddress(address);
+        p.addHobby(new Hobby("Badminton","Badminton"));
+        
+        p.setEmail("kurt@wonnegut.com");
+        
+        af.addPerson(p);
+        
     }
     
 }

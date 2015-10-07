@@ -85,14 +85,14 @@ public class JFacadeTest {
     public void addCityInfo() {
 
         af.addCityInfo(c);
-        assertEquals(2705, sf.getCityInfoList().size());
+        assertEquals(1353, sf.getCityInfoList().size());
     }
 
     @Test
     public void deleteCityInfo() {
 
-        df.deleteCityInfo(1);
-        assertEquals(2704, sf.getCityInfoList().size());
+        df.deleteCityInfo(1353);
+        assertEquals(1352, sf.getCityInfoList().size());
     }
 
     //COMPANY TEST

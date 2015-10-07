@@ -33,14 +33,45 @@ public class Person extends InfoEntity implements Serializable {
 
     @ManyToMany(cascade = CascadeType.PERSIST)
     private List<Hobby> hobbies = new ArrayList();
+
+    public List<Hobby> getHobbies() {
+        return hobbies;
+    }
+
+    public void setHobbies(List<Hobby> hobbies) {
+        this.hobbies = hobbies;
+    }
+    
+    public void addHobby(Hobby hobby){
+        hobbies.add(hobby);
+    }
+    
+    public void deleteHobby(Hobby hobby){
+        hobbies.remove(hobby);
+    }
+    
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+    
+    public Person() {
+    }
     
     public Person(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
     }
-
-    public Person() {
-    }
-
     
 }

@@ -36,10 +36,27 @@ public class InfoEntity implements Serializable {
     @Column(name="email")
     private String email;
     
-    @OneToMany(mappedBy = "infoEntity")
+    @OneToMany(mappedBy = "infoEntity", cascade = CascadeType.PERSIST)
     private List<Phone> phones = new ArrayList();
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Address address;
+
+    public List<Phone> getPhones() {
+        return phones;
+    }
+
+    public void setPhones(List<Phone> phones) {
+        this.phones = phones;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+    
     
     public void addPhone(Phone phone){
         phones.add(phone);
