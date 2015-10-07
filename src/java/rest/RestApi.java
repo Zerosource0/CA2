@@ -68,11 +68,17 @@ public class RestApi {
             json.addProperty("firstName", p.getFirstName());
             json.addProperty("lastName", p.getLastName());
             json.addProperty("email", p.getEmail());
+            
             List<Phone> phones = p.getPhones();  
+            JsonArray phoneArray = new JsonArray();
             for (Phone phone : phones) {
-                String s = phone.getNumber()+", "+phone.getDescription();
-                json.addProperty("phones", s);
+                JsonObject phoneJson = new JsonObject();
+                phoneJson.addProperty("number", phone.getNumber());
+                phoneJson.addProperty("description", phone.getDescription());
+                phoneArray.add(phoneJson);
             }
+            
+            json.addProperty("phones", phoneArray.toString());
             json.addProperty("strret", p.getAddress().getStreet());
             json.addProperty("additionalInfo", p.getAddress().getAdditionalInfo());
             json.addProperty("zipcode", p.getAddress().getCityInfo().getZipCode());
