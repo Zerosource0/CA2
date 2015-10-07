@@ -68,6 +68,11 @@ public class Person extends InfoEntity implements Serializable {
     
     public Person() {
     }
+
+    @Override
+    public String toString() {
+        return "Person{" + "firstName=" + firstName + ", lastName=" + lastName + ", hobbies=" + hobbies + '}';
+    }
     
     public Person(String firstName, String lastName) {
         this.firstName = firstName;

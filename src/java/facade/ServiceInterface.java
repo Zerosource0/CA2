@@ -39,11 +39,11 @@ public interface ServiceInterface {
     
     public Company getCompanyFromCvr(Integer cvr);
     
-    public List<Person> getPeopleFromHobby(String hobby);
+    public List<Person> getPeopleFromHobby(Hobby hobby);
     
     public List<Person> getPeopleFromCity(String city);
     
-    public Integer getCountOfPeopleFromHobby(String hobby);
+    public Integer getCountOfPeopleFromHobby(Hobby hobby);
     
     public List<Integer> getZipCodes();
     

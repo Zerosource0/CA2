@@ -85,6 +85,12 @@ public class Company extends InfoEntity implements Serializable {
     public void setMarketValue(Long marketValue) {
         this.marketValue = marketValue;
     }
+
+    @Override
+    public String toString() {
+        return "Company{" + "name=" + name + ", description=" + description + ", cvr=" + cvr + ", numEmployees=" + numEmployees + ", marketValue=" + marketValue + '}';
+    }
+    
     
     
     

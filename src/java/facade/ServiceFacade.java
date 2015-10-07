@@ -14,6 +14,7 @@ import entity.Phone;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
 
 /**
  *
@@ -101,44 +102,81 @@ public class ServiceFacade implements ServiceInterface {
     }
 
     //----------------------------------------------------------------------------------------------------------------------------------//
+   // @Override
     @Override
-    public Person getPersonFromPhone(Integer phone) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Person getPersonFromPhone(Integer phone) 
+    {
+        EntityManager em = getEntityManager();
+        Query q = em.createQuery(
+        "SELECT p FROM Person p, Phone ph WHERE PH.infoEntity = p and ph.number =:phone");
+       /* Query q = em.createNativeQuery("select person.* "
+                + "from phone, person "
+                + "where phone.INFOENTITY_id=person.id and phone.number="+ phone);
+        */
+               q.setParameter("phone", phone);
+        //em.close();
+        return (Person) q.getSingleResult();
     }
 
     @Override
     public Company getCompanyFromPhone(Integer phone) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        EntityManager em = getEntityManager();
+        Query q = em.createQuery(
+        "SELECT c FROM Company c, Phone ph WHERE PH.infoEntity = c and ph.number =:phone");
+        q.setParameter("phone", phone);
+        //em.close();
+        return (Company) q.getSingleResult();
     }
 
     @Override
     public Company getCompanyFromCvr(Integer cvr) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         EntityManager em = getEntityManager();
+        Query q = em.createQuery("select c from Company c where c.cvr=:cvr");
+        q.setParameter("cvr", cvr);
+        return (Company)q.getSingleResult();
     }
 
     @Override
-    public List<Person> getPeopleFromHobby(String hobby) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Person> getPeopleFromHobby(Hobby hobby) 
+    {
+        EntityManager em = getEntityManager();
+        Query q = em.createQuery("select p from Person p, Hobby h where :hobby MEMBER OF p.hobbies");
+        q.setParameter("hobby", hobby);
+        List<Person> lp = q.getResultList();
+        return lp ;
     }
 
     @Override
-    public List<Person> getPeopleFromCity(String city) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Person> getPeopleFromCity(String city) 
+    {
+        EntityManager em = getEntityManager();
+        Query q = em.createQuery(
+        "select p from Person p, Address a, CityInfo ci WHERE a.infoEntities=p and a.cityInfo=ci and ci.city=:city ");
+        q.setParameter("city", city);
+        return (List<Person>) q.getResultList();
     }
 
     @Override
-    public Integer getCountOfPeopleFromHobby(String hobby) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Integer getCountOfPeopleFromHobby(Hobby hobby) 
+    {
+        return getPeopleFromHobby(hobby).size();
     }
 
     @Override
-    public List<Integer> getZipCodes() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Integer> getZipCodes() 
+    {
+        EntityManager em = getEntityManager();
+        Query q = em.createQuery("select ci.zip from CityInfo ci");
+        return (List<Integer>) q.getResultList();
     }
 
     @Override
-    public List<Company> getCompanyWithMoreThanXEmployees(Integer numberEmployees) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public List<Company> getCompanyWithMoreThanXEmployees(Integer numberEmployees) 
+    {
+        EntityManager em = getEntityManager();
+        Query q = em.createQuery("select c from Company c where c.numEmployees>:numberEmployees ");
+        q.setParameter("numberEmployees", numberEmployees);
+        return (List<Company>) q.getResultList();
     }
 
 }
