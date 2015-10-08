@@ -25,6 +25,7 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
@@ -35,7 +36,7 @@ import javax.ws.rs.PUT;
  * @author marcj_000
  */
 @Path("person")
-public class RestGetApi {
+public class RestPersonApi {
 
     @Context
     private UriInfo context;
@@ -46,7 +47,7 @@ public class RestGetApi {
     private ServiceFacade serviceFacade;
     private EntityManagerFactory emf;
 
-    public RestGetApi() {
+    public RestPersonApi() {
         emf = Persistence.createEntityManagerFactory("CA2PU");
 
         gson = new GsonBuilder().setPrettyPrinting().create();
@@ -56,12 +57,11 @@ public class RestGetApi {
 
     }
 
-    
     @GET
     @Path("/zipcodes")
     @Produces("application/json")
-    public String getZipCodes(){
-    
+    public String getZipCodes() {
+
         List<CityInfo> cities = serviceFacade.getCityInfoList();
         JsonArray jsonArray = new JsonArray();
         for (CityInfo city : cities) {
@@ -71,11 +71,11 @@ public class RestGetApi {
         }
         return gson.toJson(jsonArray);
     }
-    
+
     @GET
     @Path("/city/{name}")
     @Produces("application/json")
-    public String getPeopleFromCity(@PathParam("name")String name){
+    public String getPeopleFromCity(@PathParam("name") String name) {
         List<Person> people = serviceFacade.getPeopleFromCity(name);
         JsonArray jsonArray = new JsonArray();
         for (Person p : people) {
@@ -99,15 +99,13 @@ public class RestGetApi {
 
         return gson.toJson(jsonArray);
     }
-    
-    
-    
+
     @GET
     @Path("/phone/{number}")
     @Produces("application/json")
-    public String getPersonFromPhone(@PathParam("number")Integer number){
+    public String getPersonFromPhone(@PathParam("number") Integer number) {
         Person p = serviceFacade.getPersonFromPhone(number);
-        
+
         JsonObject json = new JsonObject();
         json.addProperty("firstName", p.getFirstName());
         json.addProperty("lastName", p.getLastName());
@@ -130,7 +128,7 @@ public class RestGetApi {
 
         return gson.toJson(json);
     }
-    
+
     @GET
     @Path("/hobby/{hobby}")
     @Produces("application/json")
@@ -139,27 +137,27 @@ public class RestGetApi {
         int hobbyId = 0;
         for (Hobby h : hobbies) {
             if (h.getName().contains(hobby)) {
-                hobbyId = h.getId()-1;
+                hobbyId = h.getId() - 1;
             }
         }
         List<Person> people = serviceFacade.getPeopleFromHobby(hobbies.get(hobbyId));
         JsonArray jsonArray = new JsonArray();
         for (Person p : people) {
-        JsonObject json = new JsonObject();
-        json.addProperty("id", p.getId());
-        json.addProperty("name", new String(p.getFirstName() + " " + p.getLastName()));
-        json.addProperty("email", p.getEmail());
-        
-        List<Hobby> phobbies = p.getHobbies();
-        JsonArray hobbyArray = new JsonArray();
-        for (Hobby h : phobbies) {
-            JsonObject phoneJson = new JsonObject();
-            phoneJson.addProperty("name", h.getName());
-            phoneJson.addProperty("description", h.getDescription());
-            hobbyArray.add(phoneJson);
-        }
-        json.add("hobby", hobbyArray);
-        jsonArray.add(json);
+            JsonObject json = new JsonObject();
+            json.addProperty("id", p.getId());
+            json.addProperty("name", new String(p.getFirstName() + " " + p.getLastName()));
+            json.addProperty("email", p.getEmail());
+
+            List<Hobby> phobbies = p.getHobbies();
+            JsonArray hobbyArray = new JsonArray();
+            for (Hobby h : phobbies) {
+                JsonObject phoneJson = new JsonObject();
+                phoneJson.addProperty("name", h.getName());
+                phoneJson.addProperty("description", h.getDescription());
+                hobbyArray.add(phoneJson);
+            }
+            json.add("hobby", hobbyArray);
+            jsonArray.add(json);
         }
         return gson.toJson(jsonArray);
     }
@@ -242,7 +240,7 @@ public class RestGetApi {
     public String getContactinfoId(@PathParam("id") int id) throws PersonNotFoundException {
         List<Person> people = serviceFacade.getPeople();
 
-        if (people.isEmpty()) {
+        if (people.isEmpty() || people.get(id) == null) {
             throw new PersonNotFoundException("No people in database");
         }
         Person p = people.get(id);
@@ -305,4 +303,27 @@ public class RestGetApi {
     public void putJson(String content) {
     }
 
+    @DELETE
+    @Path("/person/{id}")
+    @Produces("application/json")
+    public String deletePerson(@PathParam("id") int id) throws PersonNotFoundException {
+        Person p = deleteFacade.deletePerson(id);
+        JsonObject json = new JsonObject();
+        json.addProperty("id", p.getId());
+        json.addProperty("name", new String(p.getFirstName() + " " + p.getLastName()));
+        json.addProperty("email", p.getEmail());
+
+        List<Phone> phones = p.getPhones();
+        JsonArray phoneArray = new JsonArray();
+        for (Phone phone : phones) {
+            JsonObject phoneJson = new JsonObject();
+            phoneJson.addProperty("number", phone.getNumber());
+            phoneJson.addProperty("description", phone.getDescription());
+            phoneArray.add(phoneJson);
+        }
+
+        json.add("phones", phoneArray);
+
+        return gson.toJson(json);
+    }
 }
