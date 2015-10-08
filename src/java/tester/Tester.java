@@ -26,6 +26,8 @@ public class Tester {
     
     public static void main(String[] args) {
         
+        
+        
         String pu = "CA2PU";
         
         Persistence.generateSchema(pu, null);
@@ -79,16 +81,16 @@ public class Tester {
         kurt.addHobby(badminton);
         kurt.addHobby(drugs);
         adam.addHobby(drugs);
-        drugs.addPerson(kurt);
-        drugs.addPerson(adam);
+
         badminton.addPerson(kurt);
         
         
         kurt.setEmail("kurt@wonnegut.com");
         af.addPerson(adam);
         af.addPerson(kurt);
+        drugs.addPerson(kurt);
+        drugs.addPerson(adam);
         /*
-        
         Person pp= sf.getPersonFromPhone(12345678);
         System.out.println(pp.toString());
         Company c=sf.getCompanyFromPhone(2452345);

@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import entity.CityInfo;
 import entity.Hobby;
 import entity.Person;
 import entity.Phone;
@@ -55,9 +56,84 @@ public class RestGetApi {
 
     }
 
+    
+    @GET
+    @Path("/zipcodes")
+    @Produces("application/json")
+    public String getZipCodes(){
+    
+        List<CityInfo> cities = serviceFacade.getCityInfoList();
+        JsonArray jsonArray = new JsonArray();
+        for (CityInfo city : cities) {
+            JsonObject json = new JsonObject();
+            json.addProperty("ZipCode", city.getZipCode());
+            jsonArray.add(json);
+        }
+        return gson.toJson(jsonArray);
+    }
+    
+    @GET
+    @Path("/city/{name}")
+    @Produces("application/json")
+    public String getPeopleFromCity(@PathParam("name")String name){
+        List<Person> people = serviceFacade.getPeopleFromCity(name);
+        JsonArray jsonArray = new JsonArray();
+        for (Person p : people) {
+            JsonObject json = new JsonObject();
+            json.addProperty("id", p.getId());
+            json.addProperty("name", new String(p.getFirstName() + " " + p.getLastName()));
+            json.addProperty("email", p.getEmail());
+
+            List<Phone> phones = p.getPhones();
+            JsonArray phoneArray = new JsonArray();
+            for (Phone phone : phones) {
+                JsonObject phoneJson = new JsonObject();
+                phoneJson.addProperty("number", phone.getNumber());
+                phoneJson.addProperty("description", phone.getDescription());
+                phoneArray.add(phoneJson);
+            }
+
+            json.add("phones", phoneArray);
+            jsonArray.add(json);
+        }
+
+        return gson.toJson(jsonArray);
+    }
+    
+    
+    
+    @GET
+    @Path("/phone/{number}")
+    @Produces("application/json")
+    public String getPersonFromPhone(@PathParam("number")Integer number){
+        Person p = serviceFacade.getPersonFromPhone(number);
+        
+        JsonObject json = new JsonObject();
+        json.addProperty("firstName", p.getFirstName());
+        json.addProperty("lastName", p.getLastName());
+        json.addProperty("email", p.getEmail());
+
+        List<Phone> phones = p.getPhones();
+        JsonArray phoneArray = new JsonArray();
+        for (Phone phone : phones) {
+            JsonObject phoneJson = new JsonObject();
+            phoneJson.addProperty("number", phone.getNumber());
+            phoneJson.addProperty("description", phone.getDescription());
+            phoneArray.add(phoneJson);
+        }
+
+        json.add("phones", phoneArray);
+        json.addProperty("strret", p.getAddress().getStreet());
+        json.addProperty("additionalInfo", p.getAddress().getAdditionalInfo());
+        json.addProperty("zipcode", p.getAddress().getCityInfo().getZipCode());
+        json.addProperty("city", p.getAddress().getCityInfo().getCity());
+
+        return gson.toJson(json);
+    }
+    
     @GET
     @Path("/hobby/{hobby}")
-    @Produces
+    @Produces("application/json")
     public String getPeopleFormHobby(@PathParam("hobby") String hobby) {
         List<Hobby> hobbies = serviceFacade.getHobbies();
         int hobbyId = 0;
