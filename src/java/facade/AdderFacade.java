@@ -108,4 +108,82 @@ public class AdderFacade implements AdderInterface {
         }
     }
 
+    @Override
+    public Person editPerson(Person person) {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.merge(person);
+            em.getTransaction().commit();
+            return person;
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public Company editCompany(Company company) {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.merge(company);
+            em.getTransaction().commit();
+            return company;
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public Hobby editHobby(Hobby hobby) {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.merge(hobby);
+            em.getTransaction().commit();
+            return hobby;
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public CityInfo editCityInfo(CityInfo cityInfo) {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.merge(cityInfo);
+            em.getTransaction().commit();
+            return cityInfo;
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public Phone editPhone(Phone phone) {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.merge(phone);
+            em.getTransaction().commit();
+            return phone;
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public Address editAddress(Address address) {
+        EntityManager em = getEntityManager();
+        try {
+            em.getTransaction().begin();
+            em.merge(address);
+            em.getTransaction().commit();
+            return address;
+        } finally {
+            em.close();
+        }
+    }
+
 }

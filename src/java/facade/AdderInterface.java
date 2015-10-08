@@ -29,4 +29,16 @@ public interface AdderInterface {
     public Phone addPhone(Phone phone);
     
     public Address addAddress(Address address);
+    
+    public Person editPerson(Person person);
+    
+    public Company editCompany(Company company);
+    
+    public Hobby editHobby(Hobby hobby);
+    
+    public CityInfo editCityInfo(CityInfo cityInfo);
+    
+    public Phone editPhone(Phone phone);
+    
+    public Address editAddress(Address address);
 }
