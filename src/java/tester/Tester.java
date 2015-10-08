@@ -31,11 +31,10 @@ public class Tester {
         Persistence.generateSchema(pu, null);
         
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(pu);
-        EntityManager em = emf.createEntityManager();
         
         AdderFacade af = new AdderFacade(emf);
         ServiceFacade sf = new ServiceFacade(emf);
-        
+        /*
         Address address = new Address("Hello Kitty Strret1","Kurts address1");
         CityInfo ci = new CityInfo(647, "New York");
         CityInfo ci2 = new CityInfo(5346, "New York");
@@ -54,7 +53,7 @@ public class Tester {
         Phone phonee = new Phone(92375678,"kurts phone1");
         phonee.addInfoEntity(pp);
         pp.addPhone(phonee);
-        pp.addHobby(new Hobby("drugs", "drugs"));
+        
         pp.setAddress(address);
         af.addPerson(pp);
         
@@ -75,35 +74,50 @@ public class Tester {
        // System.out.println("length of cities> "+cities.size());
        // address.setCityInfo(cities.get(1));
         
-        
-        p.addHobby(new Hobby("Badminton","Badminton"));
-        p.addHobby(new Hobby("drugs", "drugs"));
+        Hobby badminton = new Hobby("Badminton","Badminton");
+        Hobby drugs = new Hobby("drugs", "drugs");
+        p.addHobby(badminton);
+        p.addHobby(drugs);
+        pp.addHobby(drugs);
+        drugs.addPerson(p);
+        drugs.addPerson(pp);
+        badminton.addPerson(p);
         
         
         p.setEmail("kurt@wonnegut.com");
         
         af.addPerson(p);
-        pp= sf.getPersonFromPhone(12345678);
+        
+        */
+        Person pp= sf.getPersonFromPhone(12345678);
         System.out.println(pp.toString());
-        c=sf.getCompanyFromPhone(2452345);
+        Company c=sf.getCompanyFromPhone(2452345);
         System.out.println(c.toString());
         System.out.println(sf.getCompanyFromCvr(123213).toString());
-        List<Person> l = sf.getPeopleFromHobby(new Hobby("drugs", "drugs"));
-        System.out.println(l.size());
-        for (Person l1 : l) 
-        {
-            System.out.println("HOOBIES: "+l1.toString());
+        
+        int hobbyDrugIndex = 0;
+        List<Hobby> hobbyList = sf.getHobbies();
+        for (Hobby hobby : hobbyList) {
+            if (hobby.getName().equals("drugs")) hobbyDrugIndex = hobby.getId()-1;
         }
-        l=sf.getPeopleFromCity("New York");
-        System.out.println(l.size());
-        for (Person l1 : l) 
+        
+        List<Person> peopleFromHobby = sf.getPeopleFromHobby(sf.getHobbies().get(hobbyDrugIndex));
+        System.out.println("people from hobby drug size: "+peopleFromHobby.size());
+        
+        for (Person personFromHobby : peopleFromHobby) 
         {
-            System.out.println("CITIES: "+l1.toString());
+            System.out.println("HOBBIES: "+personFromHobby.toString());
+        }
+        List<Person> peopleFromCity =sf.getPeopleFromCity("New York");
+        System.out.println("people from City size: "+peopleFromCity.size());
+        
+        for (Person personFromcity : peopleFromCity) 
+        {
+            System.out.println("CITIES: "+personFromcity.toString());
         }
         List<Integer> zips = sf.getZipCodes();
-        for (Integer zip : zips) {
-            System.out.println("THIS IS ZIP "+zip);
-        }
+            System.out.println("Number of ZipCodes: " + zips.size());
+        
         List<Company> companies = sf.getCompanyWithMoreThanXEmployees(15);
         for (Company company : companies) {
             System.out.println("COMPANIESS "+company.toString());

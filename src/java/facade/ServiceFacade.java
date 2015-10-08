@@ -140,7 +140,7 @@ public class ServiceFacade implements ServiceInterface {
     public List<Person> getPeopleFromHobby(Hobby hobby) 
     {
         EntityManager em = getEntityManager();
-        Query q = em.createQuery("select p from Person p, Hobby h where :hobby MEMBER OF p.hobbies");
+        Query q = em.createQuery("select p from Person p, Hobby h where p.hobbies = h and h = :hobby");
         q.setParameter("hobby", hobby);
         List<Person> lp = q.getResultList();
         return lp ;
