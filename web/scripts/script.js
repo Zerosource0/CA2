@@ -6,17 +6,20 @@
 
 function getPeopleFromHobby()
 {
-    alert("Hobby works");
+    var input=$("#hobbyname").val();
+    alert(input);
 }
 
 function getPeopleFromCity()
 {
-    alert("City works");
+    var input=$("#cityname").val();
+    alert(input);
 }
 
 function getCountHobbyName()
 {
-   alert("countHobbies works") ;
+    var input=$("#counthobbyname").val();
+   alert(input) ;
 }
 
 function getZipCodes()
@@ -26,5 +29,6 @@ function getZipCodes()
 
 function getCompaniesWithMoreThanEmployees()
 {
-    alert("more than is working");
+    var input=$("#morethanxemployees").val();
+    alert(input);
 }
