@@ -123,7 +123,7 @@ public class RestGetApi {
         }
 
         json.add("phones", phoneArray);
-        json.addProperty("strret", p.getAddress().getStreet());
+        json.addProperty("street", p.getAddress().getStreet());
         json.addProperty("additionalInfo", p.getAddress().getAdditionalInfo());
         json.addProperty("zipcode", p.getAddress().getCityInfo().getZipCode());
         json.addProperty("city", p.getAddress().getCityInfo().getCity());
@@ -190,7 +190,7 @@ public class RestGetApi {
         }
 
         json.add("phones", phoneArray);
-        json.addProperty("strret", p.getAddress().getStreet());
+        json.addProperty("street", p.getAddress().getStreet());
         json.addProperty("additionalInfo", p.getAddress().getAdditionalInfo());
         json.addProperty("zipcode", p.getAddress().getCityInfo().getZipCode());
         json.addProperty("city", p.getAddress().getCityInfo().getCity());
@@ -226,7 +226,7 @@ public class RestGetApi {
             }
 
             json.add("phones", phoneArray);
-            json.addProperty("strret", p.getAddress().getStreet());
+            json.addProperty("street", p.getAddress().getStreet());
             json.addProperty("additionalInfo", p.getAddress().getAdditionalInfo());
             json.addProperty("zipcode", p.getAddress().getCityInfo().getZipCode());
             json.addProperty("city", p.getAddress().getCityInfo().getCity());
