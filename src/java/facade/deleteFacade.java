@@ -11,6 +11,7 @@ import entity.Company;
 import entity.Hobby;
 import entity.Person;
 import entity.Phone;
+import exception.PersonNotFoundException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -32,9 +33,12 @@ public class DeleteFacade implements DeleteInterface {
     }
 
     @Override
-    public Person deletePerson(int id) {
+    public Person deletePerson(int id) throws PersonNotFoundException {
         EntityManager em = emf.createEntityManager();
         Person person = em.find(Person.class, id);
+        if (person == null) {
+            throw new PersonNotFoundException("No Person found with provided id");
+        }
         try {
             em.getTransaction().begin();
             em.remove(person);
@@ -56,7 +60,8 @@ public class DeleteFacade implements DeleteInterface {
             return company;
         } finally {
             em.close();
-        }    }
+        }
+    }
 
     @Override
     public Hobby deleteHobby(int id) {
@@ -69,7 +74,8 @@ public class DeleteFacade implements DeleteInterface {
             return hobby;
         } finally {
             em.close();
-        }    }
+        }
+    }
 
     @Override
     public CityInfo deleteCityInfo(int id) {
@@ -82,7 +88,8 @@ public class DeleteFacade implements DeleteInterface {
             return cityInfo;
         } finally {
             em.close();
-        }    }
+        }
+    }
 
     @Override
     public Phone deletePhone(int id) {
@@ -95,7 +102,8 @@ public class DeleteFacade implements DeleteInterface {
             return phone;
         } finally {
             em.close();
-        }    }
+        }
+    }
 
     @Override
     public Address deleteAddress(int id) {
@@ -108,6 +116,7 @@ public class DeleteFacade implements DeleteInterface {
             return address;
         } finally {
             em.close();
-        }    }
+        }
+    }
 
 }

@@ -36,9 +36,9 @@ public class InfoEntity implements Serializable {
     @Column(name="email")
     private String email;
     
-    @OneToMany(mappedBy = "infoEntity", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "infoEntity", cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     private List<Phone> phones = new ArrayList();
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     private Address address;
 
     public List<Phone> getPhones() {

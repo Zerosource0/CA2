@@ -32,7 +32,7 @@ public class Person extends InfoEntity implements Serializable {
     @Column(name = "lastname")
     private String lastName;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch=FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch=FetchType.EAGER)
     private List<Hobby> hobbies = new ArrayList();
 
     public List<Hobby> getHobbies() {

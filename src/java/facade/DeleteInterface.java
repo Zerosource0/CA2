@@ -11,6 +11,7 @@ import entity.Company;
 import entity.Hobby;
 import entity.Person;
 import entity.Phone;
+import exception.PersonNotFoundException;
 
 /**
  *
@@ -18,7 +19,7 @@ import entity.Phone;
  */
 public interface DeleteInterface {
     
-    public Person deletePerson(int id);
+    public Person deletePerson(int id) throws PersonNotFoundException;
     
     public Company deleteCompany(int id);
     
