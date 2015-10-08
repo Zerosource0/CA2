@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -22,18 +23,26 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "hobby")
 public class Hobby implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
+    @Column(name = "id")
     private Integer id;
-    @Column(name="name")
+    @Column(name = "name")
     private String name;
-    @Column(name="description")
+    @Column(name = "description")
     private String description;
     @ManyToMany(mappedBy = "hobbies")
-    private List<Person> persons;
+    private List<Person> persons = new ArrayList();
 
+    public void addPerson(Person p){
+        persons.add(p);
+    }
+    public void deletePerson(Person p){
+        persons.remove(p);
+    }
+    
     public Hobby() {
     }
 
@@ -57,7 +66,7 @@ public class Hobby implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-    
+
     public Integer getId() {
         return id;
     }
@@ -68,7 +77,9 @@ public class Hobby implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Hobby[ id=" + id + " ]";
+        return "Hobby{" + "id=" + id + ", name=" + name + ", description=" + description + '}';
     }
-    
+
+   
+
 }
