@@ -20,13 +20,14 @@ function addPersonComplex()
     
     $.ajax(
      {  
-         type: 'POST',
+         type: "POST",
          url: 'api/person',
+         contentType: "application/json; charset=utf-8",
          dataType: "json",
          data: output,
          success: function()
          {
-             
+             alert("it works");
          }
          
      });

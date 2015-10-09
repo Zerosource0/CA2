@@ -372,6 +372,7 @@ public class RestPersonApi {
     @Produces("application/json")
     @Consumes("application/json")
     public String addPersonComplex(String content) {
+        System.out.println("I'm here");
         JsonObject newPerson = new JsonParser().parse(content).getAsJsonObject();
         Person p = new Person();
         p.setFirstName(newPerson.get("firstName").getAsString());
