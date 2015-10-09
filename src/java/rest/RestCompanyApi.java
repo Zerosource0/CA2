@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import deploy.DeploymentConfiguration;
 import entity.Address;
 import entity.CityInfo;
 import entity.Company;
@@ -54,7 +55,7 @@ public class RestCompanyApi {
     private EntityManagerFactory emf;
 
     public RestCompanyApi() {
-        emf = Persistence.createEntityManagerFactory("CA2PU");
+        emf = Persistence.createEntityManagerFactory(DeploymentConfiguration.PU_NAME);
 
         gson = new GsonBuilder().setPrettyPrinting().create();
         adderFacade = new AdderFacade(emf);
@@ -136,17 +137,40 @@ public class RestCompanyApi {
         Company c = new Company();
         c.setId(id);
         c.setName(newCompany.get("name").getAsString());
-        c.setDescription(newCompany.get("description").getAsString());
+        c.setDescription(newCompany.get("cdescription").getAsString());
+        c.setEmail(newCompany.get("email").getAsString());
         c.setCvr(Integer.parseInt(newCompany.get("cvr").getAsString()));
         c.setNumEmployees(Integer.parseInt(newCompany.get("numEmployees").getAsString()));
         c.setMarketValue(Long.parseLong(newCompany.get("marketValue").getAsString()));
-        adderFacade.editCompany(c);
+
+        CityInfo cityInfo = new CityInfo();
+        cityInfo.setCity(newCompany.get("city").getAsString());
+        cityInfo.setZipCode(newCompany.get("zipCode").getAsInt());
+
+        Address address = new Address();
+        address.setStreet(newCompany.get("street").getAsString());
+        address.setAdditionalInfo(newCompany.get("additionalInfo").getAsString());
+        Phone phone = new Phone(newCompany.get("phone").getAsInt(), newCompany.get("description").getAsString());
+        c.addPhone(phone);
+        phone.addInfoEntity(c);
+        c.setAddress(address);
+        address.addInfoEntity(c);
+        cityInfo.addAddress(address);
+        address.setCityInfo(cityInfo);
+
+        adderFacade.editCityInfo(cityInfo);
+
         JsonObject returnJson = new JsonObject();
         returnJson.addProperty("name", c.getName());
         returnJson.addProperty("description", c.getDescription());
         returnJson.addProperty("cvr", c.getCvr());
         returnJson.addProperty("numEmployees", c.getNumEmployees());
         returnJson.addProperty("marketValue", c.getMarketValue());
+        returnJson.addProperty("email", c.getEmail());
+        returnJson.addProperty("city", c.getAddress().getCityInfo().getCity());
+        returnJson.addProperty("street", c.getAddress().getStreet());
+        returnJson.addProperty("phone", c.getPhones().toString());
+        
         return gson.toJson(returnJson);
     }
 

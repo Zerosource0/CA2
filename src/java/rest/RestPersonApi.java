@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import deploy.DeploymentConfiguration;
 import entity.Address;
 import entity.CityInfo;
 import entity.Hobby;
@@ -51,7 +52,7 @@ public class RestPersonApi {
     private EntityManagerFactory emf;
 
     public RestPersonApi() {
-        emf = Persistence.createEntityManagerFactory("CA2PU");
+        emf = Persistence.createEntityManagerFactory(DeploymentConfiguration.PU_NAME);
 
         gson = new GsonBuilder().setPrettyPrinting().create();
         adderFacade = new AdderFacade(emf);
