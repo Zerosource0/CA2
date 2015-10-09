@@ -173,7 +173,7 @@ public class RestPersonApi {
         if (people.isEmpty()) {
             throw new EntityNotFoundException("No people in database");
         }
-        Person p = people.get(id-1);
+        Person p = people.get(id - 1);
 
         JsonObject json = new JsonObject();
         json.addProperty("id", p.getId());
@@ -190,14 +190,21 @@ public class RestPersonApi {
             phoneArray.add(phoneJson);
         }
         json.add("phones", phoneArray);
-        try {
-            json.addProperty("street", p.getAddress().getStreet());
-            json.addProperty("additionalInfo", p.getAddress().getAdditionalInfo());
-            json.addProperty("zipcode", p.getAddress().getCityInfo().getZipCode());
-            json.addProperty("city", p.getAddress().getCityInfo().getCity());
-        } catch (Exception e) {
-        }
+        
+                //json.addProperty("city", p.getAddress().getCityInfo().getCity());
+           
+                System.out.println(p.getAddress().getStreet());
+        
+                json.addProperty("street", p.getAddress().getStreet());
 
+            try {
+                json.addProperty("additionalInfo", p.getAddress().getAdditionalInfo());
+            } catch (Exception e) {
+            }
+            try {
+                json.addProperty("zipcode", p.getAddress().getCityInfo().getZipCode());
+            } catch (Exception e) {
+            }
         return gson.toJson(json);
     }
 
@@ -230,22 +237,6 @@ public class RestPersonApi {
             }
 
             json.add("phones", phoneArray);
-            try {
-                json.addProperty("city", p.getAddress().getCityInfo().getCity());
-            } catch (Exception e) {
-            }
-            try {
-                json.addProperty("street", p.getAddress().getStreet());
-            } catch (Exception e) {
-            }
-            try {
-                json.addProperty("additionalInfo", p.getAddress().getAdditionalInfo());
-            } catch (Exception e) {
-            }
-            try {
-                json.addProperty("zipcode", p.getAddress().getCityInfo().getZipCode());
-            } catch (Exception e) {
-            }
             
 
             jsonArray.add(json);
@@ -260,10 +251,10 @@ public class RestPersonApi {
     public String getContactinfoId(@PathParam("id") int id) throws EntityNotFoundException {
         List<Person> people = serviceFacade.getPeople();
 
-        if (people.isEmpty() || people.get(id-1) == null) {
+        if (people.isEmpty() || people.get(id - 1) == null) {
             throw new EntityNotFoundException("No people in database");
         }
-        Person p = people.get(id-1);
+        Person p = people.get(id - 1);
 
         JsonObject json = new JsonObject();
         json.addProperty("id", p.getId());
@@ -329,29 +320,26 @@ public class RestPersonApi {
         p.setFirstName(newPerson.get("firstName").getAsString());
         p.setLastName(newPerson.get("lastName").getAsString());
         p.setEmail(newPerson.get("email").getAsString());
-        
+
         CityInfo cityInfo = new CityInfo();
         cityInfo.setCity(newPerson.get("city").getAsString());
         cityInfo.setZipCode(newPerson.get("zipCode").getAsInt());
-        
-        
+
         Address address = new Address();
         address.setStreet(newPerson.get("street").getAsString());
         address.setAdditionalInfo(newPerson.get("additionalInfo").getAsString());
         cityInfo.addAddress(address);
-        
-        adderFacade.editCityInfo(cityInfo);
-        adderFacade.editAddress(address);
         address.setCityInfo(cityInfo);
-        Phone phone = new Phone(newPerson.get("phone").getAsInt(),newPerson.get("description").getAsString());
+        adderFacade.editCityInfo(cityInfo);
+
+        Phone phone = new Phone(newPerson.get("phone").getAsInt(), newPerson.get("description").getAsString());
         p.addPhone(phone);
-        
-        
+
         adderFacade.editPerson(p);
         phone.addInfoEntity(p);
         address.addInfoEntity(p);
         p.setAddress(address);
-        
+
         JsonObject returnJson = new JsonObject();
         returnJson.addProperty("id", p.getId());
         returnJson.addProperty("firstName", p.getFirstName());
@@ -380,7 +368,6 @@ public class RestPersonApi {
 //        returnJson.addProperty("email", p.getEmail());
 //        return gson.toJson(returnJson);
 //    }
-    
     @POST
     @Produces("application/json")
     @Consumes("application/json")
@@ -390,29 +377,30 @@ public class RestPersonApi {
         p.setFirstName(newPerson.get("firstName").getAsString());
         p.setLastName(newPerson.get("lastName").getAsString());
         p.setEmail(newPerson.get("email").getAsString());
-        
+
         CityInfo cityInfo = new CityInfo();
         cityInfo.setCity(newPerson.get("city").getAsString());
         cityInfo.setZipCode(newPerson.get("zipCode").getAsInt());
-        
-        
+
         Address address = new Address();
         address.setStreet(newPerson.get("street").getAsString());
         address.setAdditionalInfo(newPerson.get("additionalInfo").getAsString());
+        Phone phone = new Phone(newPerson.get("phone").getAsInt(), newPerson.get("description").getAsString());
+        p.addPhone(phone);
+        phone.addInfoEntity(p);
+        p.setAddress(address);
+        address.addInfoEntity(p);
         cityInfo.addAddress(address);
+        address.setCityInfo(cityInfo);
         
         adderFacade.addCityInfo(cityInfo);
-        adderFacade.addAddress(address);
-        address.setCityInfo(cityInfo);
-        Phone phone = new Phone(newPerson.get("phone").getAsInt(),newPerson.get("description").getAsString());
-        p.addPhone(phone);
         
         
-        adderFacade.addPerson(p);
-        phone.addInfoEntity(p);
-        address.addInfoEntity(p);
-        p.setAddress(address);
+        //adderFacade.addPerson(p);
         
+        
+        
+
         JsonObject returnJson = new JsonObject();
         returnJson.addProperty("id", p.getId());
         returnJson.addProperty("firstName", p.getFirstName());

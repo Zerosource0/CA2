@@ -44,6 +44,7 @@ public class DeleteFacade implements DeleteInterface {
         List<Hobby> hobbies = person.getHobbies();
         for (Hobby hobby : hobbies) {
             person.removeHobby(hobby);
+            hobby.deletePerson(person);
         }
         //remove address;
         person.getAddress().removeInfoEntity(person);
