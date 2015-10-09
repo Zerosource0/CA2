@@ -11,7 +11,7 @@ import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
 @Provider
-public class PersonNotFoundExceptionMapper implements ExceptionMapper<PersonNotFoundException> {
+public class EntityNotFoundExceptionMapper implements ExceptionMapper<EntityNotFoundException> {
 
   static Gson gson = new GsonBuilder().setPrettyPrinting().create();
   
@@ -19,7 +19,7 @@ public class PersonNotFoundExceptionMapper implements ExceptionMapper<PersonNotF
   ServletContext context;
 
   @Override
-  public Response toResponse(PersonNotFoundException ex) {
+  public Response toResponse(EntityNotFoundException ex) {
     boolean isDebug = context.getInitParameter("debug").toLowerCase().equals("true");
     ErrorMessage em = new ErrorMessage(ex, Response.Status.NOT_FOUND.getStatusCode(), isDebug);
     return Response.status(Response.Status.NOT_FOUND).entity(gson.toJson(em)).type(MediaType.APPLICATION_JSON).build();

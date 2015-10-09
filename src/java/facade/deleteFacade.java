@@ -11,7 +11,8 @@ import entity.Company;
 import entity.Hobby;
 import entity.Person;
 import entity.Phone;
-import exception.PersonNotFoundException;
+import exception.EntityNotFoundException;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -33,12 +34,22 @@ public class DeleteFacade implements DeleteInterface {
     }
 
     @Override
-    public Person deletePerson(int id) throws PersonNotFoundException {
+    public Person deletePerson(int id) throws EntityNotFoundException {
         EntityManager em = emf.createEntityManager();
         Person person = em.find(Person.class, id);
         if (person == null) {
-            throw new PersonNotFoundException("No Person found with provided id");
+            throw new EntityNotFoundException("No Person found with provided id");
         }
+        //Remove hobbies
+        List<Hobby> hobbies = person.getHobbies();
+        for (Hobby hobby : hobbies) {
+            person.removeHobby(hobby);
+        }
+        //remove address;
+        person.getAddress().removeInfoEntity(person);
+        person.setAddress(null);
+        //Phones should be removed automatically
+        
         try {
             em.getTransaction().begin();
             em.remove(person);
@@ -53,6 +64,10 @@ public class DeleteFacade implements DeleteInterface {
     public Company deleteCompany(int id) {
         EntityManager em = emf.createEntityManager();
         Company company = em.find(Company.class, id);
+        company.getAddress().removeInfoEntity(company);
+        company.setAddress(null);
+        
+        
         try {
             em.getTransaction().begin();
             em.remove(company);

@@ -12,7 +12,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import entity.Company;
 import entity.Phone;
-import exception.PersonNotFoundException;
+import exception.EntityNotFoundException;
 import facade.AdderFacade;
 import facade.DeleteFacade;
 import facade.ServiceFacade;
@@ -177,7 +177,7 @@ public class RestCompanyApi {
     @DELETE
     @Path("/{id}")
     @Produces("application/json")
-    public String deleteCompany(@PathParam("id") int id) throws PersonNotFoundException {
+    public String deleteCompany(@PathParam("id") int id) throws EntityNotFoundException {
         Company c = deleteFacade.deleteCompany(id);
         return gson.toJson(c);
     }

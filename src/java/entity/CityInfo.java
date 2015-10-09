@@ -11,6 +11,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -38,7 +39,7 @@ public class CityInfo implements Serializable {
     private Integer zip;
 
 
-    @OneToMany(mappedBy = "cityInfo", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "cityInfo", cascade = CascadeType.PERSIST,fetch=FetchType.EAGER)
     private List<Address> addresses = new ArrayList();
     
     public void addAddress(Address address){

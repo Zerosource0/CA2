@@ -10,11 +10,12 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import entity.Address;
 import entity.CityInfo;
 import entity.Hobby;
 import entity.Person;
 import entity.Phone;
-import exception.PersonNotFoundException;
+import exception.EntityNotFoundException;
 import facade.AdderFacade;
 import facade.DeleteFacade;
 import facade.ServiceFacade;
@@ -167,10 +168,10 @@ public class RestPersonApi {
     @GET
     @Path("/complete/{id}")
     @Produces("application/json")
-    public String getCompleteId(@PathParam("id") int id) throws PersonNotFoundException {
+    public String getCompleteId(@PathParam("id") int id) throws EntityNotFoundException {
         List<Person> people = serviceFacade.getPeople();
         if (people.isEmpty()) {
-            throw new PersonNotFoundException("No people in database");
+            throw new EntityNotFoundException("No people in database");
         }
         Person p = people.get(id-1);
 
@@ -203,12 +204,12 @@ public class RestPersonApi {
     @GET
     @Path("/complete")
     @Produces("application/json")
-    public String getComplete() throws PersonNotFoundException {
+    public String getComplete() throws EntityNotFoundException {
 
         List<Person> people = serviceFacade.getPeople();
 
         if (people.isEmpty()) {
-            throw new PersonNotFoundException("No people in database");
+            throw new EntityNotFoundException("No people in database");
         }
 
         JsonArray jsonArray = new JsonArray();
@@ -230,12 +231,22 @@ public class RestPersonApi {
 
             json.add("phones", phoneArray);
             try {
-                json.addProperty("street", p.getAddress().getStreet());
-                json.addProperty("additionalInfo", p.getAddress().getAdditionalInfo());
-                json.addProperty("zipcode", p.getAddress().getCityInfo().getZipCode());
                 json.addProperty("city", p.getAddress().getCityInfo().getCity());
             } catch (Exception e) {
             }
+            try {
+                json.addProperty("street", p.getAddress().getStreet());
+            } catch (Exception e) {
+            }
+            try {
+                json.addProperty("additionalInfo", p.getAddress().getAdditionalInfo());
+            } catch (Exception e) {
+            }
+            try {
+                json.addProperty("zipcode", p.getAddress().getCityInfo().getZipCode());
+            } catch (Exception e) {
+            }
+            
 
             jsonArray.add(json);
         }
@@ -246,11 +257,11 @@ public class RestPersonApi {
     @GET
     @Path("/contactinfo/{id}")
     @Produces("application/json")
-    public String getContactinfoId(@PathParam("id") int id) throws PersonNotFoundException {
+    public String getContactinfoId(@PathParam("id") int id) throws EntityNotFoundException {
         List<Person> people = serviceFacade.getPeople();
 
         if (people.isEmpty() || people.get(id-1) == null) {
-            throw new PersonNotFoundException("No people in database");
+            throw new EntityNotFoundException("No people in database");
         }
         Person p = people.get(id-1);
 
@@ -276,12 +287,12 @@ public class RestPersonApi {
     @GET
     @Path("/contactinfo")
     @Produces("application/json")
-    public String getContactInfo() throws PersonNotFoundException {
+    public String getContactInfo() throws EntityNotFoundException {
 
         List<Person> people = serviceFacade.getPeople();
 
         if (people.isEmpty()) {
-            throw new PersonNotFoundException("No people in database");
+            throw new EntityNotFoundException("No people in database");
         }
 
         JsonArray jsonArray = new JsonArray();
@@ -326,28 +337,71 @@ public class RestPersonApi {
         return gson.toJson(returnJson);
     }
 
+//    @POST
+//    @Produces("application/json")
+//    @Consumes("application/json")
+//    public String addPersonSimple(String content) {
+//        JsonObject newPerson = new JsonParser().parse(content).getAsJsonObject();
+//        Person p = new Person();
+//        p.setFirstName(newPerson.get("firstName").getAsString());
+//        p.setLastName(newPerson.get("lastName").getAsString());
+//        p.setEmail(newPerson.get("email").getAsString());
+//        adderFacade.addPerson(p);
+//        JsonObject returnJson = new JsonObject();
+//        returnJson.addProperty("id", p.getId());
+//        returnJson.addProperty("firstName", p.getFirstName());
+//        returnJson.addProperty("lastName", p.getLastName());
+//        returnJson.addProperty("email", p.getEmail());
+//        return gson.toJson(returnJson);
+//    }
+    
     @POST
     @Produces("application/json")
     @Consumes("application/json")
-    public String addPerson(String content) {
+    public String addPersonComplex(String content) {
         JsonObject newPerson = new JsonParser().parse(content).getAsJsonObject();
         Person p = new Person();
         p.setFirstName(newPerson.get("firstName").getAsString());
         p.setLastName(newPerson.get("lastName").getAsString());
         p.setEmail(newPerson.get("email").getAsString());
+        
+        CityInfo cityInfo = new CityInfo();
+        cityInfo.setCity(newPerson.get("city").getAsString());
+        cityInfo.setZipCode(newPerson.get("zipCode").getAsInt());
+        
+        
+        Address address = new Address();
+        address.setStreet(newPerson.get("street").getAsString());
+        address.setAdditionalInfo(newPerson.get("additionalInfo").getAsString());
+        cityInfo.addAddress(address);
+        
+        adderFacade.addCityInfo(cityInfo);
+        adderFacade.addAddress(address);
+        address.setCityInfo(cityInfo);
+        Phone phone = new Phone(newPerson.get("phone").getAsInt(),newPerson.get("description").getAsString());
+        p.addPhone(phone);
+        
+        
         adderFacade.addPerson(p);
+        phone.addInfoEntity(p);
+        address.addInfoEntity(p);
+        p.setAddress(address);
+        
         JsonObject returnJson = new JsonObject();
         returnJson.addProperty("id", p.getId());
         returnJson.addProperty("firstName", p.getFirstName());
         returnJson.addProperty("lastName", p.getLastName());
         returnJson.addProperty("email", p.getEmail());
+        returnJson.addProperty("city", p.getAddress().getCityInfo().getCity());
+        returnJson.addProperty("street", p.getAddress().getStreet());
+        returnJson.addProperty("phone", p.getPhones().toString());
         return gson.toJson(returnJson);
     }
 
     @DELETE
     @Path("/person/{id}")
     @Produces("application/json")
-    public String deletePerson(@PathParam("id") int id) throws PersonNotFoundException {
+    public String deletePerson(@PathParam("id") int id) throws EntityNotFoundException {
         Person p = deleteFacade.deletePerson(id);
         JsonObject json = new JsonObject();
         json.addProperty("id", p.getId());

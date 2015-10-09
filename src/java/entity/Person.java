@@ -47,7 +47,7 @@ public class Person extends InfoEntity implements Serializable {
         hobbies.add(hobby);
     }
     
-    public void deleteHobby(Hobby hobby){
+    public void removeHobby(Hobby hobby){
         hobbies.remove(hobby);
     }
     

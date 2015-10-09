@@ -77,7 +77,7 @@ public class Phone implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Phone[ id=" + id + " ]";
+        return "Phone{" + "number=" + number + ", description=" + description + '}';
     }
-    
+
 }

@@ -11,6 +11,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -38,7 +39,7 @@ public class InfoEntity implements Serializable {
     
     @OneToMany(mappedBy = "infoEntity", cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     private List<Phone> phones = new ArrayList();
-    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+    @ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.REMOVE},fetch=FetchType.EAGER)
     private Address address;
 
     public List<Phone> getPhones() {

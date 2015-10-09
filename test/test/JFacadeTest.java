@@ -11,7 +11,7 @@ import entity.Company;
 import entity.Hobby;
 import entity.Person;
 import entity.Phone;
-import exception.PersonNotFoundException;
+import exception.EntityNotFoundException;
 import facade.AdderFacade;
 import facade.DeleteFacade;
 import facade.ServiceFacade;
@@ -62,7 +62,7 @@ public class JFacadeTest {
     }
 
     @Test
-    public void deletePerson() throws PersonNotFoundException {
+    public void deletePerson() throws EntityNotFoundException {
 
         df.deletePerson(1);
         assertEquals(0, sf.getPeople().size());

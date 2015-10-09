@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -38,7 +39,7 @@ public class Address implements Serializable {
     @Column(name = "additionalinfo")
     private String additionalInfo;
 
-    @OneToMany(mappedBy = "address")
+    @OneToMany(mappedBy = "address", fetch=FetchType.EAGER)
     private List<InfoEntity> infoEntities = new ArrayList();
     @ManyToOne
     private CityInfo cityInfo;
@@ -59,7 +60,7 @@ public class Address implements Serializable {
         infoEntities.add(infoEntity);
     }
 
-    public void deleteInfoEntity(InfoEntity infoEntity) {
+    public void removeInfoEntity(InfoEntity infoEntity) {
         infoEntities.remove(infoEntity);
     }
 
