@@ -329,11 +329,37 @@ public class RestPersonApi {
         p.setFirstName(newPerson.get("firstName").getAsString());
         p.setLastName(newPerson.get("lastName").getAsString());
         p.setEmail(newPerson.get("email").getAsString());
+        
+        CityInfo cityInfo = new CityInfo();
+        cityInfo.setCity(newPerson.get("city").getAsString());
+        cityInfo.setZipCode(newPerson.get("zipCode").getAsInt());
+        
+        
+        Address address = new Address();
+        address.setStreet(newPerson.get("street").getAsString());
+        address.setAdditionalInfo(newPerson.get("additionalInfo").getAsString());
+        cityInfo.addAddress(address);
+        
+        adderFacade.editCityInfo(cityInfo);
+        adderFacade.editAddress(address);
+        address.setCityInfo(cityInfo);
+        Phone phone = new Phone(newPerson.get("phone").getAsInt(),newPerson.get("description").getAsString());
+        p.addPhone(phone);
+        
+        
         adderFacade.editPerson(p);
+        phone.addInfoEntity(p);
+        address.addInfoEntity(p);
+        p.setAddress(address);
+        
         JsonObject returnJson = new JsonObject();
+        returnJson.addProperty("id", p.getId());
         returnJson.addProperty("firstName", p.getFirstName());
         returnJson.addProperty("lastName", p.getLastName());
         returnJson.addProperty("email", p.getEmail());
+        returnJson.addProperty("city", p.getAddress().getCityInfo().getCity());
+        returnJson.addProperty("street", p.getAddress().getStreet());
+        returnJson.addProperty("phone", p.getPhones().toString());
         return gson.toJson(returnJson);
     }
 
