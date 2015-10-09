@@ -64,7 +64,7 @@ public class JFacadeTest {
     @Test
     public void deletePerson() throws EntityNotFoundException {
 
-        df.deletePerson(1);
+        df.deletePerson(2);
         assertEquals(0, sf.getPeople().size());
     }
 
@@ -117,7 +117,7 @@ public class JFacadeTest {
 
     @Test
     public void deleteCompany() {
-        df.deleteCompany(2);
+        df.deleteCompany(1);
         assertEquals(0, sf.getCompanies().size());
     }
 
@@ -157,53 +157,66 @@ public class JFacadeTest {
     //SERVICE FACADE TEST
     
     public void addForServiceTests(){
-         Address address = new Address("Hello Kitty Strret1","Kurts address1");
-        CityInfo ci = new CityInfo(647, "New York");
-        CityInfo ci2 = new CityInfo(5346, "New York");
-        ci.addAddress(address);
-        address.setCityInfo(ci);
-        af.addCityInfo(ci);
-        af.addCityInfo(ci2);
+         
         
+             String pu = "CA2PU";
+        
+        Persistence.generateSchema(pu, null);
+        
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(pu);
+        
+        AdderFacade af = new AdderFacade(emf);
+        ServiceFacade sf = new ServiceFacade(emf);
+        
+        
+        //Citites
+        CityInfo ci = new CityInfo(647, "New York");
+        CityInfo ci2 = new CityInfo(5346, "New Dork");
+        //Addresses
+        Address address = new Address("Hello Kitty Strret1","Kurts address1");
+        Address address2 = new Address("Adam Street","Polski Kurva Street");
+        Address address3 = new Address("Company Street 3","HelloKittyCity");
+        ci2.addAddress(address3);
+        ci2.addAddress(address2);
+        ci.addAddress(address);
+        address3.setCityInfo(ci2);
+        address.setCityInfo(ci);
+        address2.setCityInfo(ci2);
+        //Companies
+        Company c = new Company("kurt company", "this company is so wonnegut", 123213, 30, Long.MIN_VALUE);
+        Phone phone = new Phone(2452345, "company tel");
+        c.setAddress(address3);
+        phone.addInfoEntity(c);
+        c.addPhone(phone);     
+        //People
         Person kurt = new Person("Kurt","Wonnegut4");
-        Phone phone = new Phone(12345678,"kurts phone1");
+        phone = new Phone(12345678,"kurts phone1");
         phone.addInfoEntity(kurt);
         kurt.addPhone(phone);
         kurt.setAddress(address);
+        kurt.setEmail("kurt@wonnegut.com");
         
         Person adam = new Person("Adam","Lewandowski");
         Phone phonee = new Phone(92375678,"kurts phone1");
         phonee.addInfoEntity(adam);
         adam.addPhone(phonee);
-        
-        adam.setAddress(address);
-        
-        phone = new Phone(87654321,"kurts other phone");
-        phone.addInfoEntity(kurt);
-        kurt.addPhone(phone);
-        
-        Company c = new Company("kurt company", "this company is so wonnegut", 123213, 30, Long.MIN_VALUE);
-        phone= new Phone(2452345, "company tel");
-        phone.addInfoEntity(c);
-        c.addPhone(phone);
-        af.addCompany(c);
-        c = new Company("adam company", "this company is so adam", 435, 20, Long.MIN_VALUE);
-        af.addCompany(c);
-        c = new Company("random company", "this company is so adam", 324324, 10, Long.MIN_VALUE);
-        af.addCompany(c);
-        
+        adam.setAddress(address2);
+        adam.setEmail("adam@kurva.com");
+        //Hobbies
         Hobby badminton = new Hobby("Badminton","Badminton");
         Hobby drugs = new Hobby("drugs", "drugs");
         kurt.addHobby(badminton);
         kurt.addHobby(drugs);
         adam.addHobby(drugs);
+        
+        af.addCityInfo(ci);
+        af.addCityInfo(ci2);
+        af.addCompany(c);
+        af.addPerson(adam);
+        af.addPerson(kurt);
         drugs.addPerson(kurt);
         drugs.addPerson(adam);
         badminton.addPerson(kurt);
-        kurt.setEmail("kurt@wonnegut.com");
-        
-        af.addPerson(adam);
-        af.addPerson(kurt);
     }
     
     @Test
@@ -212,7 +225,7 @@ public class JFacadeTest {
         addForServiceTests();
         Person pp1= sf.getPersonFromPhone(12345678);
         assertEquals("Kurt", pp1.getFirstName());
-        assertEquals("Wonnegut", pp1.getLastName());
+        assertEquals("Wonnegut4", pp1.getLastName());
     }
     
     @Test
@@ -243,7 +256,7 @@ public class JFacadeTest {
     
     @Test
     public void getCountOfPeopleFromHobby(){
-        Hobby h = new Hobby("badminton","badminton");
+        Hobby h = new Hobby("drug","drug");
         assertEquals(2 ,sf.getPeopleFromHobby(h).size());
     }
     

@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import static org.hamcrest.Matchers.*;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import tester.Tester;
 
 /**
  *
@@ -27,6 +28,8 @@ public class JRestAssured {
         baseURI = "http://localhost:8080/CA2";
         defaultParser = Parser.JSON;
         basePath = "/api";
+        Tester test = new Tester();
+        test.runner();
     }
 
     //GET PERSON TESTS
@@ -38,8 +41,8 @@ public class JRestAssured {
                 get("/person/complete/1").
                 then().
                     statusCode(200).
-                    body("firstName",equalTo("Kurt")).
-                    body("lastName",equalTo("Wonnegut4"))
+                    body("firstName",equalTo("Adam")).
+                    body("lastName",equalTo("Lewandowski"))
                 ;
                 
     }
@@ -75,7 +78,7 @@ public class JRestAssured {
                 get("/person/city/New York").
                 then().
                 statusCode(200).
-                body("name", hasItems("Adam Lewandowski", "Kurt Wonnegut4"));
+                body("name", hasItems("Kurt Wonnegut4"));
     }
 
     @Test
@@ -98,7 +101,7 @@ public class JRestAssured {
                 get("/person/hobby/drugs").
                 then().
                 statusCode(200).
-                body("name", hasItems("Kurt Wonnegut4"));
+                body("name", hasItems("Kurt Wonnegut4", "Adam Lewandowski"));
     }
 
     @Test
@@ -109,10 +112,10 @@ public class JRestAssured {
                 get("/person/contactinfo/1").
                 then().
                 statusCode(200).
-                body("id", equalTo(5)). 
-                body("name", equalTo("Kurt Wonnegut4")). 
-                body("email", equalTo("kurt@wonnegut.com")). 
-                body("phones.number", hasItems(87654321,12345678));
+                body("id", equalTo(2)). 
+                body("name", equalTo("Adam Lewandowski")). 
+                body("email", equalTo("adam@kurva.com")). 
+                body("phones.number", hasItems(92375678));
     }
 
     @Test
@@ -123,10 +126,11 @@ public class JRestAssured {
                 get("/person/contactinfo").
                 then().
                 statusCode(200).
-                body("id", hasItems(4,5)). 
-                body("name", hasItems("Kurt Wonnegut4","Adam Lewandowski")). 
-                body("email", hasItems("kurt@wonnegut.com")).
-                body("phones.number", hasItems(92375678,87654321,12345678));
+                body("id", hasItems(2,3)). 
+                body("name", hasItems("Adam Lewandowski", "Kurt Wonnegut4")). 
+                body("email", hasItems("adam@kurva.com","kurt@wonnegut.com"));
+               // body("phones.number", hasItems(92375678, 12345678));
+        
     }
     
 
@@ -253,23 +257,23 @@ public class JRestAssured {
 //                statusCode(200);
 //    }
 
-//    @Test
-//    public void deletePerson() {
-//        given().
-//                when().
-//                delete("/delete/person/4").
-//                then(). 
-//                statusCode(200);
-//    }
-//
-//    @Test
-//    public void deleteCompany() {
-//        given().
-//                when().
-//                delete("/delete/company/2").
-//                then(). 
-//                statusCode(200);
-//    }
+    @Test
+    public void deletePerson() {
+        given().
+                when().
+                delete("/delete/person/1").
+                then(). 
+                statusCode(200);
+    }
+
+    @Test
+    public void deleteCompany() {
+        given().
+                when().
+                delete("/delete/company/2").
+                then(). 
+                statusCode(200);
+    }
 //
 //    @Test
 //    public void deleteHobby() {
