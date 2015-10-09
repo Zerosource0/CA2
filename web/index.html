@@ -15,8 +15,30 @@ and open the template in the editor.
     <body>
         <div id="authors"> Adam Lewandowski, Marc Jesse, William Bech </div>
         <div id="class">COS</div>
-        <div id="group"> Missing gr number </div><br>
+        <div id="group"> 5 </div><br>
         
+        Add person<br>
+        <div id="addedPerson" ></div>
+        <form id="addPersonForm" name="addPersonForm">
+            First name<input type="text" id="firstNameForm"><br>
+            Last name <input type="text" id="lastNameForm"><br>
+            Email<input type="email" id="emailForm"><br>
+            City<input type="text" id="cityForm"><br>
+            ZipCode<input type="number" id="zipCodeForm"><br>
+            Street<input type="text" id="streetForm"><br>
+            Additional Info<input type="text" id="additionalInfoForm"><br>
+            Phone<input type="number" id="phoneForm"><br>
+            Description<input type="text" id="descform"><br>
+            
+        </form>
+        <button onclick="addPersonComplex()">submit</button><br>
+        <br>
+        
+        Get person from phone<br>
+        <div id="showPhone" ></div>
+        <input id="phoneNumber"><br>
+        <button id="getPersonFromPhone" onclick="getPersonFromPhone()">Sumbit</button><br>
+        <div></div><br>
          Get complete info<br>
         <button onclick="getCompleteInfo()">Submit</button>
         <table border="1" style="width:100%" id="completeInfoTable"> 

@@ -1,4 +1,61 @@
 
+function addPersonComplex()
+{
+    //var input=$("#addPersonForm :input").serializeArray();
+   // input=JSON.stringify(input,"name");
+   // alert(input);
+   var firstName =$("#firstNameForm").val();
+    var output=("{" + 
+    "\"firstName\" "+": "+"\""+ firstName +"\", "+
+    "\"lastName\" "+": "+"\""+$("#lastNameForm").val() +"\", "+
+    "\"email\" "+": "+"\""+$("#emailForm").val() +"\", "+
+    "\"city\" "+": "+"\""+$("#cityForm").val() +"\", "+
+    "\"zipCode\" "+": "+"\""+$("#zipCodeForm").val() +"\", "+
+    "\"street\" "+": "+"\""+$("#streetForm").val() +"\", "+
+    "\"additionalInfo\" "+": "+"\""+$("#additionalInfoForm").val() +"\", "+
+    "\"phone\" "+": "+"\""+$("#phoneForm").val() +"\", "+
+    "\"description\" "+": "+"\""+$("#descform").val() +"\""+
+    "}");
+    $("#showPhone").text(output);
+    
+    $.ajax(
+     {  
+         type: 'POST',
+         url: 'api/person',
+         dataType: "json",
+         data: output,
+         success: function()
+         {
+             
+         }
+         
+     });
+    /*
+     {
+    "firstName" : "Jonas",
+    "lastName"  : "Bjoern",
+    "email"     : "jb@mail.dk",
+    "city"      : "Copenhagen",
+    "zipCode"   : "2300",
+    "street"    : "Georginevej 7",
+    "additionalInfo" : "Jonas' address",
+    "phone"     : "30317338",
+    "description" : "Jonas' Phone"
+    }
+    */
+
+    $.each(input, function(i){
+        $.each(this, function(k,v){
+            alert(v);
+        });
+        
+        
+    });
+    
+    
+    
+}
+
 function getCompleteInfo()
 {
     var tableName = ("#completeInfoTable");
