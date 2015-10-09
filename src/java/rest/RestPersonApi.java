@@ -397,9 +397,7 @@ public class RestPersonApi {
         
         
         //adderFacade.addPerson(p);
-        
-        
-        
+
 
         JsonObject returnJson = new JsonObject();
         returnJson.addProperty("id", p.getId());
