@@ -37,7 +37,7 @@ function getPersonFromPhone()
 function getPeopleFromHobby()
 {
     var input=$("#hobbyname").val();
-    alert(input);
+    
     var tableName=("#hobbyNameTable");
     
     $.ajax
@@ -55,7 +55,7 @@ function getPeopleFromHobby()
 function getPeopleFromCity()
 {
     var input=$("#cityname").val();
-    alert(input);
+   
     var tableName=("#cityNameTable");
 
     $.ajax
@@ -102,7 +102,7 @@ function getZipCodes()
 function getCompaniesWithMoreThanEmployees()
 {
     var input=$("#morethanxemployees").val();
-    alert(input);
+    
 }
 
 
