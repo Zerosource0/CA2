@@ -8,6 +8,7 @@ package entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -39,7 +40,7 @@ public class Address implements Serializable {
     @Column(name = "additionalinfo")
     private String additionalInfo;
 
-    @OneToMany(mappedBy = "address", fetch=FetchType.EAGER)
+    @OneToMany(mappedBy = "address", cascade = CascadeType.PERSIST, fetch=FetchType.EAGER)
     private List<InfoEntity> infoEntities = new ArrayList();
     @ManyToOne
     private CityInfo cityInfo;
