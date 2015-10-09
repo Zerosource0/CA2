@@ -1,9 +1,43 @@
 
+function addCompanyComplex()
+{
+    
+   //var firstName =$("#firstNameForm").val();
+    var output=("{" + 
+    "\"name\" "+": "+"\""+ $("#companyName").val() +"\", "+
+    "\"cdescription\" "+": "+"\""+$("#companyDescription").val() +"\", "+
+    "\"cvr\" "+": "+"\""+$("#companyCvr").val() +"\", "+
+    "\"numEmployees\" "+": "+"\""+$("#companyEmployess").val() +"\", "+
+    "\"marketValue\" "+": "+"\""+$("#companyMarketValue").val() +"\", "+
+    "\"email\" "+": "+"\""+$("#companyEmail").val() +"\", "+
+    "\"city\" "+": "+"\""+$("#companyCity").val() +"\", "+
+    "\"zipCode\" "+": "+"\""+$("#companyZipCode").val() +"\", "+
+    "\"street\" "+": "+"\""+$("#companyStreet").val() +"\", "+
+    "\"additionalInfo\" "+": "+"\""+$("#companyAdditionalInfo").val() +"\", "+
+    "\"phone\" "+": "+"\""+$("#companyPhone").val() +"\", "+
+    "\"description\" "+": "+"\""+$("#companyPhoneDescription").val() +"\""+
+    "}");
+    $("#showPhone").text(output);
+    
+    $.ajax(
+     {  
+         type: "POST",
+         url: 'api/company',
+         contentType: "application/json; charset=utf-8",
+         dataType: "json",
+         data: output,
+         success: function()
+         {
+             alert("it works");
+         }
+         
+     });
+   
+}
+
 function addPersonComplex()
 {
-    //var input=$("#addPersonForm :input").serializeArray();
-   // input=JSON.stringify(input,"name");
-   // alert(input);
+    
    var firstName =$("#firstNameForm").val();
     var output=("{" + 
     "\"firstName\" "+": "+"\""+ firstName +"\", "+
@@ -31,30 +65,7 @@ function addPersonComplex()
          }
          
      });
-    /*
-     {
-    "firstName" : "Jonas",
-    "lastName"  : "Bjoern",
-    "email"     : "jb@mail.dk",
-    "city"      : "Copenhagen",
-    "zipCode"   : "2300",
-    "street"    : "Georginevej 7",
-    "additionalInfo" : "Jonas' address",
-    "phone"     : "30317338",
-    "description" : "Jonas' Phone"
-    }
-    */
-
-    $.each(input, function(i){
-        $.each(this, function(k,v){
-            alert(v);
-        });
-        
-        
-    });
-    
-    
-    
+   
 }
 
 function getCompleteInfo()
