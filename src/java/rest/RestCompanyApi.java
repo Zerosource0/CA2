@@ -10,7 +10,10 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import entity.Address;
+import entity.CityInfo;
 import entity.Company;
+import entity.Person;
 import entity.Phone;
 import exception.EntityNotFoundException;
 import facade.AdderFacade;
@@ -60,24 +63,67 @@ public class RestCompanyApi {
 
     }
 
+//    @POST
+//    @Consumes("application/json")
+//    @Produces("application/json")
+//    public String addCompany(String content) {
+//        JsonObject newCompany = new JsonParser().parse(content).getAsJsonObject();
+//        Company c = new Company();
+//        c.setName(newCompany.get("name").getAsString());
+//        c.setDescription(newCompany.get("description").getAsString());
+//        c.setCvr(Integer.parseInt(newCompany.get("cvr").getAsString()));
+//        c.setNumEmployees(Integer.parseInt(newCompany.get("numEmployees").getAsString()));
+//        c.setMarketValue(Long.parseLong(newCompany.get("marketValue").getAsString()));
+//        adderFacade.addCompany(c);
+//        JsonObject returnJson = new JsonObject();
+//        returnJson.addProperty("name", c.getName());
+//        returnJson.addProperty("description", c.getDescription());
+//        returnJson.addProperty("cvr", c.getCvr());
+//        returnJson.addProperty("numEmployees", c.getNumEmployees());
+//        returnJson.addProperty("marketValue", c.getMarketValue());
+//        return gson.toJson(returnJson);
+//    }
     @POST
-    @Consumes("application/json")
     @Produces("application/json")
-    public String addCompany(String content) {
+    @Consumes("application/json")
+    public String addCompanyComplex(String content) {
         JsonObject newCompany = new JsonParser().parse(content).getAsJsonObject();
         Company c = new Company();
         c.setName(newCompany.get("name").getAsString());
-        c.setDescription(newCompany.get("description").getAsString());
+        c.setDescription(newCompany.get("cdescription").getAsString());
+        c.setEmail(newCompany.get("email").getAsString());
         c.setCvr(Integer.parseInt(newCompany.get("cvr").getAsString()));
         c.setNumEmployees(Integer.parseInt(newCompany.get("numEmployees").getAsString()));
         c.setMarketValue(Long.parseLong(newCompany.get("marketValue").getAsString()));
-        adderFacade.addCompany(c);
+
+        CityInfo cityInfo = new CityInfo();
+        cityInfo.setCity(newCompany.get("city").getAsString());
+        cityInfo.setZipCode(newCompany.get("zipCode").getAsInt());
+
+        Address address = new Address();
+        address.setStreet(newCompany.get("street").getAsString());
+        address.setAdditionalInfo(newCompany.get("additionalInfo").getAsString());
+        Phone phone = new Phone(newCompany.get("phone").getAsInt(), newCompany.get("description").getAsString());
+        c.addPhone(phone);
+        phone.addInfoEntity(c);
+        c.setAddress(address);
+        address.addInfoEntity(c);
+        cityInfo.addAddress(address);
+        address.setCityInfo(cityInfo);
+
+        adderFacade.addCityInfo(cityInfo);
+
         JsonObject returnJson = new JsonObject();
         returnJson.addProperty("name", c.getName());
         returnJson.addProperty("description", c.getDescription());
         returnJson.addProperty("cvr", c.getCvr());
         returnJson.addProperty("numEmployees", c.getNumEmployees());
         returnJson.addProperty("marketValue", c.getMarketValue());
+        returnJson.addProperty("email", c.getEmail());
+        returnJson.addProperty("city", c.getAddress().getCityInfo().getCity());
+        returnJson.addProperty("street", c.getAddress().getStreet());
+        returnJson.addProperty("phone", c.getPhones().toString());
+        
         return gson.toJson(returnJson);
     }
 
@@ -85,7 +131,7 @@ public class RestCompanyApi {
     @Consumes("application/json")
     @Produces("application/json")
     @Path("{id}")
-    public String editCompany(@PathParam("id")Integer id, String content) {
+    public String editCompany(@PathParam("id") Integer id, String content) {
         JsonObject newCompany = new JsonParser().parse(content).getAsJsonObject();
         Company c = new Company();
         c.setId(id);
@@ -103,7 +149,7 @@ public class RestCompanyApi {
         returnJson.addProperty("marketValue", c.getMarketValue());
         return gson.toJson(returnJson);
     }
-    
+
     @GET
     @Path("/{id}")
     @Produces("application/json")
@@ -126,6 +172,7 @@ public class RestCompanyApi {
             JsonObject pJson = new JsonObject();
             pJson.addProperty("number", phone.getNumber());
             pJson.addProperty("decription", phone.getDescription());
+            phoneArray.add(pJson);
         }
         json.add("phones", phoneArray);
         json.addProperty("street", c.getAddress().getStreet());
@@ -161,6 +208,7 @@ public class RestCompanyApi {
                 JsonObject pJson = new JsonObject();
                 pJson.addProperty("number", phone.getNumber());
                 pJson.addProperty("decription", phone.getDescription());
+                phoneArray.add(pJson);
             }
             json.add("phones", phoneArray);
             json.addProperty("street", c.getAddress().getStreet());
@@ -174,6 +222,109 @@ public class RestCompanyApi {
         return gson.toJson(jsonArray);
     }
 
+    @GET
+    @Produces("application/json")
+    @Path("/employees/{number}")
+    public String getCompanyWithMoreThanXEmployees(@PathParam("number")int number) {
+        List<Company> companies = serviceFacade.getCompanyWithMoreThanXEmployees(number);
+
+        if (companies.isEmpty()) {
+            //Thow exception
+        }
+
+        JsonArray jsonArray = new JsonArray();
+
+        for (Company c : companies) {
+            JsonObject json = new JsonObject();
+            json.addProperty("name", c.getName());
+            json.addProperty("description", c.getDescription());
+            json.addProperty("cvr", c.getCvr());
+            json.addProperty("email", c.getEmail());
+
+            List<Phone> phones = c.getPhones();
+            JsonArray phoneArray = new JsonArray();
+            for (Phone phone : phones) {
+                JsonObject pJson = new JsonObject();
+                pJson.addProperty("number", phone.getNumber());
+                pJson.addProperty("decription", phone.getDescription());
+                phoneArray.add(pJson);
+            }
+            json.add("phones", phoneArray);
+            json.addProperty("street", c.getAddress().getStreet());
+            json.addProperty("additionalInfo", c.getAddress().getAdditionalInfo());
+            json.addProperty("city", c.getAddress().getCityInfo().getCity());
+            json.addProperty("numEmployees", c.getNumEmployees());
+            json.addProperty("marketValue", c.getMarketValue());
+            jsonArray.add(json);
+        }
+
+        return gson.toJson(jsonArray);
+    }
+    
+    @GET
+    @Path("/phone/{number}")
+    @Produces("application/json")
+    public String getCompanyFromPhone(@PathParam("number") int number){
+
+        Company c = serviceFacade.getCompanyFromPhone(number);
+        JsonObject json = new JsonObject();
+        json.addProperty("name", c.getName());
+        json.addProperty("description", c.getDescription());
+        json.addProperty("cvr", c.getCvr());
+        json.addProperty("email", c.getEmail());
+
+        List<Phone> phones = c.getPhones();
+        JsonArray phoneArray = new JsonArray();
+        for (Phone phone : phones) {
+            JsonObject pJson = new JsonObject();
+            pJson.addProperty("number", phone.getNumber());
+            pJson.addProperty("decription", phone.getDescription());
+            phoneArray.add(pJson);
+        }
+        json.add("phones", phoneArray);
+        json.addProperty("street", c.getAddress().getStreet());
+        json.addProperty("additionalInfo", c.getAddress().getAdditionalInfo());
+        json.addProperty("city", c.getAddress().getCityInfo().getCity());
+        json.addProperty("numEmployees", c.getNumEmployees());
+        json.addProperty("marketValue", c.getMarketValue());
+
+        return gson.toJson(json);
+        
+    }
+    
+    @GET
+    @Path("/cvr/{cvr}")
+    @Produces("application/json")
+    public String getCompanyFromCvr(@PathParam("cvr") int cvr){
+
+        Company c = serviceFacade.getCompanyFromCvr(cvr);
+        JsonObject json = new JsonObject();
+        json.addProperty("name", c.getName());
+        json.addProperty("description", c.getDescription());
+        json.addProperty("cvr", c.getCvr());
+        json.addProperty("email", c.getEmail());
+
+        List<Phone> phones = c.getPhones();
+        JsonArray phoneArray = new JsonArray();
+        for (Phone phone : phones) {
+            JsonObject pJson = new JsonObject();
+            pJson.addProperty("number", phone.getNumber());
+            pJson.addProperty("decription", phone.getDescription());
+            phoneArray.add(pJson);
+        }
+        json.add("phones", phoneArray);
+        json.addProperty("street", c.getAddress().getStreet());
+        json.addProperty("additionalInfo", c.getAddress().getAdditionalInfo());
+        json.addProperty("city", c.getAddress().getCityInfo().getCity());
+        json.addProperty("numEmployees", c.getNumEmployees());
+        json.addProperty("marketValue", c.getMarketValue());
+
+        return gson.toJson(json);
+        
+    }
+    
+    
+    
     @DELETE
     @Path("/{id}")
     @Produces("application/json")
