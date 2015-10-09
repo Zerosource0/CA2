@@ -35,7 +35,7 @@ public class Phone implements Serializable {
     @Column(name = "description")
     private String description;
     
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private InfoEntity infoEntity;
 
     public void addInfoEntity(InfoEntity infoEntity){
