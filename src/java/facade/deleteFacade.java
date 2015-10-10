@@ -62,9 +62,13 @@ public class DeleteFacade implements DeleteInterface {
     }
 
     @Override
-    public Company deleteCompany(int id) {
+    public Company deleteCompany(int id) throws EntityNotFoundException{
         EntityManager em = emf.createEntityManager();
         Company company = em.find(Company.class, id);
+        
+        if (company == null) {
+            throw new EntityNotFoundException("No Person found with provided id");
+        }
         company.getAddress().removeInfoEntity(company);
         company.setAddress(null);
         
@@ -80,9 +84,12 @@ public class DeleteFacade implements DeleteInterface {
     }
 
     @Override
-    public Hobby deleteHobby(int id) {
+    public Hobby deleteHobby(int id) throws EntityNotFoundException {
         EntityManager em = emf.createEntityManager();
         Hobby hobby = em.find(Hobby.class, id);
+        if (hobby == null) {
+            throw new EntityNotFoundException("No Person found with provided id");
+        }
         try {
             em.getTransaction().begin();
             em.remove(hobby);
@@ -94,9 +101,12 @@ public class DeleteFacade implements DeleteInterface {
     }
 
     @Override
-    public CityInfo deleteCityInfo(int id) {
+    public CityInfo deleteCityInfo(int id) throws EntityNotFoundException{
         EntityManager em = emf.createEntityManager();
         CityInfo cityInfo = em.find(CityInfo.class, id);
+        if (cityInfo == null) {
+            throw new EntityNotFoundException("No Person found with provided id");
+        }
         try {
             em.getTransaction().begin();
             em.remove(cityInfo);
@@ -108,9 +118,12 @@ public class DeleteFacade implements DeleteInterface {
     }
 
     @Override
-    public Phone deletePhone(int id) {
+    public Phone deletePhone(int id) throws EntityNotFoundException {
         EntityManager em = emf.createEntityManager();
         Phone phone = em.find(Phone.class, id);
+        if (phone == null) {
+            throw new EntityNotFoundException("No Person found with provided id");
+        }
         try {
             em.getTransaction().begin();
             em.remove(phone);
@@ -122,9 +135,12 @@ public class DeleteFacade implements DeleteInterface {
     }
 
     @Override
-    public Address deleteAddress(int id) {
+    public Address deleteAddress(int id) throws EntityNotFoundException{
         EntityManager em = emf.createEntityManager();
         Address address = em.find(Address.class, id);
+        if (address == null) {
+            throw new EntityNotFoundException("No Person found with provided id");
+        }
         try {
             em.getTransaction().begin();
             em.remove(address);
