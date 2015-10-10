@@ -6,7 +6,7 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>View Data</title>
+        <title>Data Manager</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
@@ -16,6 +16,41 @@ and open the template in the editor.
         <div id="authors"> Adam Lewandowski, Marc Jesse, William Bech </div>
         <div id="class">COS</div>
         <div id="group"> 5 </div><br>
+        
+        Add person<br>
+        <form id="addCompanyForm" name="addPersonForm">
+            Name<input type="text" id="companyName"><br>
+            Company description <input type="text" id="companyDescription"><br>
+            Cvr<input type="number" id="companyCvr"><br>
+            Number of employees<input type="number" id="companyEmployess"><br>
+            Market value<input type="number" id="companyMarketValue"><br>
+            Email<input type="email" id="companyEmail"><br>
+            City<input type="text" id="companyCity"><br>
+            Zip Code<input type="number" id="companyZipCode"><br>
+            Street<input type="text" id="companyStreet"><br>
+            Additional info<input type="text" id="companyAdditionalInfo"><br>
+            Company phone<input type="number" id="companyPhone"><br>
+            Description<input type="text" id="companyPhoneDescription"><br>
+            
+        </form>
+        <button onclick="addCompanyComplex()">submit</button><br>
+        <br>
+        
+        Add person<br>
+        <form id="addPersonForm" name="addPersonForm">
+            First name<input type="text" id="firstNameForm"><br>
+            Last name <input type="text" id="lastNameForm"><br>
+            Email<input type="email" id="emailForm"><br>
+            City<input type="text" id="cityForm"><br>
+            ZipCode<input type="number" id="zipCodeForm"><br>
+            Street<input type="text" id="streetForm"><br>
+            Additional Info<input type="text" id="additionalInfoForm"><br>
+            Phone<input type="number" id="phoneForm"><br>
+            Description<input type="text" id="descform"><br>
+            
+        </form>
+        <button onclick="addPersonComplex()">submit</button><br>
+        <br>
         
         Get person from phone<br>
         <div id="showPhone" ></div>
@@ -64,8 +99,4 @@ and open the template in the editor.
         </table>
         
         
-        
-        
-        
-    </body>
 </html>

@@ -396,7 +396,7 @@ public class RestCompanyApi {
     }
 
     @DELETE
-    @Path("/{id}")
+    @Path("delete/{id}")
     @Produces("application/json")
     public String deleteCompany(@PathParam("id") int id) throws EntityNotFoundException {
         Company c = deleteFacade.deleteCompany(id);
