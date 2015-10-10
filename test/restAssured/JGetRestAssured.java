@@ -99,7 +99,7 @@ public class JGetRestAssured {
                 get("/person/hobby/drugs").
                 then().
                 statusCode(200).
-                body("name", hasItems("Kurt Wonnegut4"));
+                body("name", hasItems("Adam Lewandowski","Kurt Wonnegut4"));
     }
 
     @Test
