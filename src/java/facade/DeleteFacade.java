@@ -40,17 +40,18 @@ public class DeleteFacade implements DeleteInterface {
         if (person == null) {
             throw new EntityNotFoundException("No Person found with provided id");
         }
-        //Remove hobbies
-        List<Hobby> hobbies = person.getHobbies();
-        for (Hobby hobby : hobbies) {
-            person.removeHobby(hobby);
-            hobby.deletePerson(person);
-        }
-        //remove address;
-        person.getAddress().removeInfoEntity(person);
-        person.setAddress(null);
-        //Phones should be removed automatically
-        
+
+//        List<Hobby> hobbies = person.getHobbies();
+//        for (Hobby hobby : hobbies) {
+//            person.removeHobby(hobby);
+//            hobby.deletePerson(person);
+//        }
+//        //remove address;
+//        person.getAddress().removeInfoEntity(person);
+//        person.setAddress(null);
+//        //Phones should be removed automatically
+//        
+
         try {
             em.getTransaction().begin();
             em.remove(person);
@@ -65,9 +66,6 @@ public class DeleteFacade implements DeleteInterface {
     public Company deleteCompany(int id) {
         EntityManager em = emf.createEntityManager();
         Company company = em.find(Company.class, id);
-        company.getAddress().removeInfoEntity(company);
-        company.setAddress(null);
-        
         
         try {
             em.getTransaction().begin();

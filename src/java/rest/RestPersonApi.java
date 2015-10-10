@@ -412,7 +412,7 @@ public class RestPersonApi {
     }
 
     @DELETE
-    @Path("/person/{id}")
+    @Path("delete/{id}")
     @Produces("application/json")
     public String deletePerson(@PathParam("id") int id) throws EntityNotFoundException {
         Person p = deleteFacade.deletePerson(id);

@@ -24,6 +24,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.runners.MethodSorters;
 import org.junit.*;
+import tester.Tester;
 
 
 /**
@@ -34,6 +35,7 @@ import org.junit.*;
 public class JFacadeTest {
 
     public JFacadeTest() {
+        
 
     }
 
@@ -251,7 +253,7 @@ public class JFacadeTest {
     @Test
     public void getPeopleFromCity(){
         
-        assertEquals(2,sf.getPeopleFromCity("New York").size());
+        assertEquals(1,sf.getPeopleFromCity("New York").size());
     }
     
     @Test
