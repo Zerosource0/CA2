@@ -10,12 +10,50 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="scripts/modifyScript.js" type="text/javascript"></script>
         <script src="scripts/script.js" type="text/javascript"></script>
     </head>
     <body>
         <div id="authors"> Adam Lewandowski, Marc Jesse, William Bech </div>
         <div id="class">COS</div>
         <div id="group"> 5 </div><br>
+        
+        Edit person<br>
+        <form id="EDITaddPersonForm" name="addPersonForm">
+            Id <input type ="number" id="personId"><br>
+            First name<input type="text" id="EDITfirstNameForm"><br>
+            Last name <input type="text" id="EDITlastNameForm"><br>
+            Email<input type="email" id="EDITemailForm"><br>
+            City<input type="text" id="EDITcityForm"><br>
+            ZipCode<input type="number" id="EDITzipCodeForm"><br>
+            Street<input type="text" id="EDITstreetForm"><br>
+            Additional Info<input type="text" id="EDITadditionalInfoForm"><br>
+            Phone<input type="number" id="EDITphoneForm"><br>
+            Description<input type="text" id="EDITdescform"><br>
+            
+        </form>
+        <button onclick="editPerson()">submit</button><br>
+        <br>
+        
+        Edit company<br>
+        <form id="EDITCompanyForm" name="editCompanyForm">
+            Id<input type="number" id="EDITcompanyId"><br>
+            Name<input type="text" id="EDITcompanyName"><br>
+            Company description <input type="text" id="EDITcompanyDescription"><br>
+            Cvr<input type="number" id="EDITcompanyCvr"><br>
+            Number of employees<input type="number" id="EDITcompanyEmployess"><br>
+            Market value<input type="number" id="EDITcompanyMarketValue"><br>
+            Email<input type="email" id="EDITcompanyEmail"><br>
+            City<input type="text" id="EDITcompanyCity"><br>
+            Zip Code<input type="number" id="EDITcompanyZipCode"><br>
+            Street<input type="text" id="EDITcompanyStreet"><br>
+            Additional info<input type="text" id="EDITcompanyAdditionalInfo"><br>
+            Company phone<input type="number" id="EDITcompanyPhone"><br>
+            Description<input type="text" id="EDITcompanyPhoneDescription"><br>
+            
+        </form>
+        <button onclick="editCompany()">submit</button><br>
+        <br>
         
         Add person<br>
         <form id="addCompanyForm" name="addPersonForm">
