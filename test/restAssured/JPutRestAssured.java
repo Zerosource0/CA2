@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package test;
+package restAssured;
 
 import static com.jayway.restassured.RestAssured.basePath;
 import static com.jayway.restassured.RestAssured.baseURI;
@@ -35,9 +35,19 @@ public class JPutRestAssured {
     public void editPerson() {
         given().
                 contentType(MediaType.APPLICATION_JSON).
-                body("{\"person\":\"this is so wise\"}").
+                body("{" + 
+    "\"firstName\" "+": "+"\""+ "dudeNewer" +"\", "+
+    "\"lastName\" "+": "+"\""+"ImNewest" +"\", "+
+    "\"email\" "+": "+"\""+"nestew@new.new" +"\", "+
+    "\"city\" "+": "+"\""+"newestCity" +"\", "+
+    "\"zipCode\" "+": "+"\""+ 123 +"\", "+
+    "\"street\" "+": "+"\""+"newestStreet" +"\", "+
+    "\"additionalInfo\" "+": "+"\""+"emh?" +"\", "+
+    "\"phone\" "+": "+"\""+1234 +"\", "+
+    "\"description\" "+": "+"\""+"new phone" +"\""+
+    "}").
                 when().
-                put().
+                put("/person/1").
                 then(). 
                 statusCode(200);
     }
@@ -46,9 +56,22 @@ public class JPutRestAssured {
     public void editCompany() {
         given().
                 contentType(MediaType.APPLICATION_JSON).
-                body("{\"company\":\"this is so wise\"}").
+                body("{" + 
+    "\"name\" "+": "+"\""+ "newestCompany" +"\", "+
+    "\"cdescription\" "+": "+"\""+"newest comp" +"\", "+
+    "\"cvr\" "+": "+"\""+ 123 +"\", "+
+    "\"numEmployees\" "+": "+"\""+500 +"\", "+
+    "\"marketValue\" "+": "+"\""+123 +"\", "+
+    "\"email\" "+": "+"\""+"nfdsest@comp.fds" +"\", "+
+    "\"city\" "+": "+"\""+ "newest dork" +"\", "+
+    "\"zipCode\" "+": "+"\""+123 +"\", "+
+    "\"street\" "+": "+"\""+"dorathonest" +"\", "+
+    "\"additionalInfo\" "+": "+"\""+"dudeest tiz be a company" +"\", "+
+    "\"phone\" "+": "+"\""+123 +"\", "+
+    "\"description\" "+": "+"\""+ "a phoneest? much wow." +"\""+
+    "}").
                 when().
-                put().
+                put("/company/1").
                 then(). 
                 statusCode(200);
     }
