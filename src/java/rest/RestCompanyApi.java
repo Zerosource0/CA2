@@ -124,7 +124,7 @@ public class RestCompanyApi {
         returnJson.addProperty("city", c.getAddress().getCityInfo().getCity());
         returnJson.addProperty("street", c.getAddress().getStreet());
         returnJson.addProperty("phone", c.getPhones().toString());
-        
+
         return gson.toJson(returnJson);
     }
 
@@ -132,8 +132,23 @@ public class RestCompanyApi {
     @Consumes("application/json")
     @Produces("application/json")
     @Path("{id}")
-    public String editCompany(@PathParam("id") Integer id, String content) {
+    public String editCompany(@PathParam("id") Integer id, String content) throws EntityNotFoundException {
         JsonObject newCompany = new JsonParser().parse(content).getAsJsonObject();
+
+        boolean idExists = false;
+        List<Company> companies = serviceFacade.getCompanies();
+        if (companies.isEmpty()) {
+            throw new EntityNotFoundException("No companies exists in the database");
+        }
+        for (Company company : companies) {
+            if (company.getId() == id) {
+                idExists = true;
+            }
+        }
+        if (!idExists) {
+            throw new EntityNotFoundException("No company with id: " + id + " exists in the database");
+        }
+
         Company c = new Company();
         c.setId(id);
         c.setName(newCompany.get("name").getAsString());
@@ -170,18 +185,28 @@ public class RestCompanyApi {
         returnJson.addProperty("city", c.getAddress().getCityInfo().getCity());
         returnJson.addProperty("street", c.getAddress().getStreet());
         returnJson.addProperty("phone", c.getPhones().toString());
-        
+
         return gson.toJson(returnJson);
     }
 
     @GET
     @Path("/{id}")
     @Produces("application/json")
-    public String getCompanyById(@PathParam("id") int id) {
+    public String getCompanyById(@PathParam("id") int id) throws EntityNotFoundException {
         List<Company> companies = serviceFacade.getCompanies();
 
-        if (companies.isEmpty() || companies.get(id - 1) == null) {
-            //Thow exception
+        boolean idExists = false;
+
+        if (companies.isEmpty()) {
+            throw new EntityNotFoundException("No companies exists in the database");
+        }
+        for (Company company : companies) {
+            if (company.getId() == id) {
+                idExists = true;
+            }
+        }
+        if (!idExists) {
+            throw new EntityNotFoundException("No company with id: " + id + " exists in the database");
         }
         Company c = companies.get(id - 1);
         JsonObject json = new JsonObject();
@@ -210,11 +235,11 @@ public class RestCompanyApi {
 
     @GET
     @Produces("application/json")
-    public String getCompanies() {
+    public String getCompanies() throws EntityNotFoundException {
         List<Company> companies = serviceFacade.getCompanies();
 
         if (companies.isEmpty()) {
-            //Thow exception
+            throw new EntityNotFoundException("No Companies exists in the database");
         }
 
         JsonArray jsonArray = new JsonArray();
@@ -249,11 +274,11 @@ public class RestCompanyApi {
     @GET
     @Produces("application/json")
     @Path("/employees/{number}")
-    public String getCompanyWithMoreThanXEmployees(@PathParam("number")int number) {
+    public String getCompanyWithMoreThanXEmployees(@PathParam("number") int number) throws EntityNotFoundException {
         List<Company> companies = serviceFacade.getCompanyWithMoreThanXEmployees(number);
 
         if (companies.isEmpty()) {
-            //Thow exception
+            throw new EntityNotFoundException("No Companies with more than " + number + " employees exists in the database");
         }
 
         JsonArray jsonArray = new JsonArray();
@@ -284,13 +309,34 @@ public class RestCompanyApi {
 
         return gson.toJson(jsonArray);
     }
-    
+
     @GET
     @Path("/phone/{number}")
     @Produces("application/json")
-    public String getCompanyFromPhone(@PathParam("number") int number){
+    public String getCompanyFromPhone(@PathParam("number") int number) throws EntityNotFoundException {
 
         Company c = serviceFacade.getCompanyFromPhone(number);
+
+        boolean idExists = false;
+        List<Company> companies = serviceFacade.getCompanies();
+        if (companies.isEmpty()) {
+            throw new EntityNotFoundException("No companies exists in the database");
+        }
+        
+            if (!c.getPhones().isEmpty()) {
+
+                List<Phone> phones = c.getPhones();
+                for (Phone phone : phones) {
+                    if (phone.getNumber() == number) {
+                        idExists = true;
+                    }
+                }
+            }
+        
+        if (!idExists) {
+            throw new EntityNotFoundException("No Companies with the number: " + number + " exists in the database");
+        }
+
         JsonObject json = new JsonObject();
         json.addProperty("name", c.getName());
         json.addProperty("description", c.getDescription());
@@ -313,15 +359,17 @@ public class RestCompanyApi {
         json.addProperty("marketValue", c.getMarketValue());
 
         return gson.toJson(json);
-        
+
     }
-    
+
     @GET
     @Path("/cvr/{cvr}")
     @Produces("application/json")
-    public String getCompanyFromCvr(@PathParam("cvr") int cvr){
+    public String getCompanyFromCvr(@PathParam("cvr") int cvr) throws EntityNotFoundException {
 
         Company c = serviceFacade.getCompanyFromCvr(cvr);
+        
+
         JsonObject json = new JsonObject();
         json.addProperty("name", c.getName());
         json.addProperty("description", c.getDescription());
@@ -344,16 +392,37 @@ public class RestCompanyApi {
         json.addProperty("marketValue", c.getMarketValue());
 
         return gson.toJson(json);
-        
+
     }
-    
-    
-    
+
     @DELETE
     @Path("/{id}")
     @Produces("application/json")
     public String deleteCompany(@PathParam("id") int id) throws EntityNotFoundException {
         Company c = deleteFacade.deleteCompany(id);
-        return gson.toJson(c);
+
+        JsonObject json = new JsonObject();
+        json.addProperty("name", c.getName());
+        json.addProperty("description", c.getDescription());
+        json.addProperty("cvr", c.getCvr());
+        json.addProperty("email", c.getEmail());
+
+        List<Phone> phones = c.getPhones();
+        JsonArray phoneArray = new JsonArray();
+        for (Phone phone : phones) {
+            JsonObject pJson = new JsonObject();
+            pJson.addProperty("number", phone.getNumber());
+            pJson.addProperty("decription", phone.getDescription());
+            phoneArray.add(pJson);
+        }
+        json.add("phones", phoneArray);
+        json.addProperty("street", c.getAddress().getStreet());
+        json.addProperty("additionalInfo", c.getAddress().getAdditionalInfo());
+        json.addProperty("city", c.getAddress().getCityInfo().getCity());
+        json.addProperty("numEmployees", c.getNumEmployees());
+        json.addProperty("marketValue", c.getMarketValue());
+
+        return gson.toJson(json);
+
     }
 }

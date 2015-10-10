@@ -19,8 +19,8 @@ public class AllExceptionMapper implements ExceptionMapper<Throwable> {
 
   @Override
   public Response toResponse(Throwable ex) {
-    boolean isDebug = context.getInitParameter("debug").toLowerCase().equals("true");
-    ErrorMessage em = new ErrorMessage(ex, Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),isDebug);
+    
+    ErrorMessage em = new ErrorMessage(ex, Response.Status.INTERNAL_SERVER_ERROR.getStatusCode());
     em.setMessage("Internal server Error, we are very sorry for the inconvenience");
     return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(gson.toJson(em)).type(MediaType.APPLICATION_JSON).build();
             

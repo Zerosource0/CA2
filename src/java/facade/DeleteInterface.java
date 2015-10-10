@@ -21,14 +21,14 @@ public interface DeleteInterface {
     
     public Person deletePerson(int id) throws EntityNotFoundException;
     
-    public Company deleteCompany(int id);
+    public Company deleteCompany(int id) throws EntityNotFoundException;
     
-    public Hobby deleteHobby(int id);
+    public Hobby deleteHobby(int id) throws EntityNotFoundException;
     
-    public CityInfo deleteCityInfo(int id);
+    public CityInfo deleteCityInfo(int id) throws EntityNotFoundException;
     
-    public Phone deletePhone(int id);
+    public Phone deletePhone(int id) throws EntityNotFoundException;
     
-    public Address deleteAddress(int id);
+    public Address deleteAddress(int id) throws EntityNotFoundException;
     
 }

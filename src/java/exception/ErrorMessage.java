@@ -5,15 +5,15 @@ import java.io.StringWriter;
 
 public class ErrorMessage {
 
-  public ErrorMessage(Throwable ex, int code,boolean debug) {
+  public ErrorMessage(Throwable ex, int code) {
     this.code = code;
     this.message = ex.getMessage();
     
-    if(debug){
+    
       StringWriter sw = new StringWriter();
       ex.printStackTrace(new PrintWriter(sw));
       this.stackTrace = sw.toString();
-    }
+    
   }
 
   public String getMessage() {

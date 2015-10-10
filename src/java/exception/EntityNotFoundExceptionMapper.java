@@ -20,8 +20,7 @@ public class EntityNotFoundExceptionMapper implements ExceptionMapper<EntityNotF
 
   @Override
   public Response toResponse(EntityNotFoundException ex) {
-    boolean isDebug = context.getInitParameter("debug").toLowerCase().equals("true");
-    ErrorMessage em = new ErrorMessage(ex, Response.Status.NOT_FOUND.getStatusCode(), isDebug);
+    ErrorMessage em = new ErrorMessage(ex, Response.Status.NOT_FOUND.getStatusCode());
     return Response.status(Response.Status.NOT_FOUND).entity(gson.toJson(em)).type(MediaType.APPLICATION_JSON).build();
             
   }
