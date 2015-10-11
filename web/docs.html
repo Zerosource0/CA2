@@ -4,7 +4,7 @@ To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
 -->
-<html>
+<html style="width:50%; margin-left: 25%;">
     <head>
         <title>Documentation</title>
         <meta charset="UTF-8">
@@ -14,7 +14,139 @@ and open the template in the editor.
         <div>
             <h2 style="text-align: center;">Documentation</h2>
             
-            
+            <h2>Rest API</h2>
+
+<p>A complete description of the REST API, error responses and JSON format. This description must
+be accompanied by a (small) tutorial/example of how to use the API with AJAX and JQuery. This
+description must be on a separate page.</p>
+
+<p>The two REST API’s, RestCompanyApi and RestPersonApi consists of the standard CRUD methods - Create, Read, Update and Delete, along with some special methods, e.g. getPersonFromPhone(), getCompanyFromPhone(), etc. The exact methods can be seen below:</p>
+
+
+
+<p>They’re invoked by HTTP calls: GET, POST, PUT and Delete.
+Some of these can consume URL parameters and/or JSON objects. The methods are making calls to the three facades:</p>
+
+<p>AdderFacade, which handles all the adding and editing of entities in the database 
+DeleteFacade, which handles removal of entities in the database
+ServiceFacade, which handles all retrieval of entities in the database</p>
+
+<p>JSON templates for editing and adding Company entities:
+    <br>
+{
+<br>
+    "name" : "AppleCompany",
+    <br>
+    "cdescription"  : "Designed by Apple in California, Made by child laborers in Indonesia",
+    <br>
+    "cvr"       : "283993003",
+    <br>
+    "numEmployees" : "1000000000",
+    <br>
+    "marketValue" : "928292829292",
+    <br>
+    "email"     : "Apple@mail.dk",
+    <br>
+    "city"      : "Palo Alto",
+    <br>
+    "zipCode"   : "695822",
+    <br>
+    "street"    : "Apple rd. 2830",
+    <br>
+    "additionalInfo" : "Apple's address",<br>
+    "phone"     : "555555599",
+    <br>
+    "description" : "Apple's Phone"
+    <br>
+}
+<br>
+<br>
+
+And for Person entities<br>
+{<br>
+    "firstName" : "Jonas",<br>
+    "lastName"  : "Bjoern",<br>
+    "email"     : "jb@mail.dk",<br>
+    "city"      : "Copenhagen",<br>
+    "zipCode"   : "2300",<br>
+    "street"    : "Georginevej 7",<br>
+    "additionalInfo" : "Jonas' address",<br>
+    "phone"     : "30317338",<br>
+    "description" : "Jonas' Phone"<br>
+}
+<p>
+
+<h2>WebSite</h2>
+
+<p>The website has three different pages to it, it has a page that simply consists of all get methods we have created in the REST API, a page which consists of all our REST API methods.</p>
+
+<p>Despite the fact that our website completely lacks CSS, it’s very easy to navigate.</p>
+
+
+<p>The only thing that you need to do is to enter data in form and submit it.
+Website is using jQuery, javascript and AJAX, so internet browser has to support those technologies in order to use this website. Website doesn’t implement all of the Rest api methods because we didn’t have enough time to finish them. Basic idea behind this website is to obtain data from html fields, obtain it via jQuery and get results by AJAX call. We are using JSON objects to send and receive data.</p>
+
+<h2>Test</h2>
+
+<p>For our project we have created two different tests; one for the facade and one for the REST API. For the facade testing we used the JUnit test library to simplify the testing process. We tested all the methods we had created in all three facades. Meaning we tested the adder, delete and service facade. As for testing the REST API we used REST Assured. With REST Assured we tested all the classes that were created and used in the REST API, this includes the adding, deleting, editing and getting methods. </p>
+
+<p>We have had problems with the persistence units which help add to our data to the database. Thus making us unable to create a functional persistence unit solely for the test units. This has then led us to have to remove our security as with security our access to the database was blocked and made the tests unrunnable. </p>
+
+<p>Specifically talking about the JUnit test (facade test), we have created two different JUnit test classes to test the facade. One which tests basic adding, deleting, getting and editing. These simple tests passed at a 100%. Securing that the base of our facade and REST API was functional and ready to expand. </p>
+
+
+<p>The other facade test, JServiceTest, tests all of our project specific methods. Methods such as getPeopleFromCity, getCompanyFromPhone and getZip. This test does not pass at a 100% success rate. The main problem here being that we were not able to get the hobbies section of our database to function properly with the rest our entities. Making two test methods fail, the getPeopleFromHobby and getCountOfPeopleFromHobby. This has led our test to pass at a 75%. To run the the facade tests you will be required to have JUnit 4.11.</p>
+
+
+<p>The JUnit test is split into 4 different test classes, the reason being that when all the classes were amasses into one class the results would widely vary. This was caused due to the methods not being run in a specific order making delete method being run before get methods and making some test cases fail. Thus leading to a JDeleteRestAssured, JPutRestAssured, JPostRestAssured and JGetRestAssuredClass. All tests pass at a 100% except for the JGetRestAssuredClass passing at a 87.5% due to the failing getPeopleFromHobby method, which was also the cause for the 75% in the JServiceTest (facade test). </p>
+
+<h2>REST Assured</h2>
+
+<p>As Mentioned before the REST Assured tests are testing all of our implemented REST API methods. The way to test it is to simply run the Tester class in the restAssured package, to set up the database for the test and then run the tests. If you want to test all the classes firstly test the JGetRestAssured (get) class, and test the JDeleteRestAssured (delete) last. It does not matter whether you run the JPostRestAssured class before the JPutRestAssured class, and vice versa. JRestAssured class in the test package and run it. Once run the database will be set up. </p>
+
+<h2>PostMan Testing:</h2>
+
+<p>baseURIPath = “http://localhost:8080/CA2/api”</p>
+
+<p>To test with postman you will firstly have to run the index.html page to get your tomcat running and then you will be able to try all of our REST API methods by adding on the correct prompts into the URI. </p>
+
+<h2>Person:</h2>
+
+<p>Add /person to the URI to test person methods.</p>
+
+<p>Replace all capitalized words in URI with own input.</p>
+
+<p>e.g: “http://localhost:8080/CA2/api/person/zipcodes” - will retrieve all zip codes.
+<br>
+Get people from city - “http://localhost:8080/CA2/api/person/city/CITYNAME” 
+<br>
+Get people from phone - “http://localhost:8080/CA2/api/person/phone/PHONENUM” 
+<br>
+Get person from id - “http://localhost:8080/CA2/api/person/complete/ID” 
+<br>
+Get all people - “http://localhost:8080/CA2/api/person/complete”
+<br>
+Get contact info from id - “http://localhost:8080/CA2/api/person/contactinfo/ID”  
+<br>
+Get all contact info- “http://localhost:8080/CA2/api/person/contactinfo”
+<br>
+Put new info for person - “http://localhost:8080/CA2/api/person/ID”  
+<br>
+Post new person - “http://localhost:8080/CA2/api/person”  
+<br>
+Delete person - “http://localhost:8080/CA2/api/person/delete/ID”    
+
+</p>
+
+
+<h2>Who did What</h2>
+
+<p>As a team we split up the tasks as to who wanted to do what and tried to make it as even as possible. We faced a lot of unexpected issues making our original splitting up of tasks have to change around. Marc had created the REST API and made part of the facade with peer programing with William. The REST API being a hefty task took Marcs full focus. Adam created the other half of the facade, making all of the methods which needed queries to be completed. Adam also created the main web pages which consisted of showing, editing, creating and deleting. He made the ajax, connecting our REST API with the front end. William created the facade test and the REST Assured test. Having created the tests William also attempted fixing methods that did not return expected values. He also implemented the security for the website.</p>
+
+<h2>Openshift problems</h2>
+
+<p>For reasons unknown, we couldn’t get the .war file uploaded to OpenShift. Therefore we decided to hand in a link to the github page. Since we have had problems with openshift you will now have to run the tester class to populate the database, or simply populate it manually by entering data through the website. </p>
+
         
         
         </div>
